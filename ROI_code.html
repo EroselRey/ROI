@@ -1390,8 +1390,6 @@
         function addPrimeCEE(tableType) {
             if (tableType === 'existing') return; // Pas de prime pour l'existant
 
-            equipmentCounters[tableType].prime++;
-            const primeNum = equipmentCounters[tableType].prime;
 
             const tbody = document.getElementById(`${tableType}-tbody`);
             const row = createEquipmentRow(`Prime CEE ${primeNum}`, 'prime', primeNum, tableType, 'prime');
@@ -1417,8 +1415,6 @@
         function addReprise(tableType) {
             if (tableType === 'existing') return; // Pas de reprise pour l'existant
 
-            equipmentCounters[tableType].reprise++;
-            const repriseNum = equipmentCounters[tableType].reprise;
 
             const tbody = document.getElementById(`${tableType}-tbody`);
             const row = createEquipmentRow(`Reprise équipement ${repriseNum}`, 'reprise', repriseNum, tableType, 'reprise');
