@@ -1165,9 +1165,9 @@
         };
         let charts = {};
         let equipmentCounters = {
-            existing: { compressors: 0, dryers: 0 },
-            solution1: { compressors: 0, dryers: 0 },
-            solution2: { compressors: 0, dryers: 0 }
+            existing: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+            solution1: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+            solution2: { compressors: 0, dryers: 0, prime: 0, reprise: 0 }
         };
 
         // Navigation entre les étapes
@@ -1365,13 +1365,23 @@
             });
             
             calculateStep(currentStep);
-            showSuccessMessage(`${equipmentType === 'dryer' ? 'Sécheur' : 'Compresseur'} ${equipmentNum} supprimé !`);
+            let label;
+            if (equipmentType === 'dryer') {
+                label = 'Sécheur';
+            } else if (equipmentType === 'prime') {
+                label = 'Prime CEE';
+            } else if (equipmentType === 'reprise') {
+                label = 'Reprise équipement';
+            } else {
+                label = 'Compresseur';
+            }
+            showSuccessMessage(`${label} ${equipmentNum} supprimé !`);
         }
 
         function clearTable(tableType) {
             const tbody = document.getElementById(`${tableType}-tbody`);
             tbody.innerHTML = '';
-            equipmentCounters[tableType] = { compressors: 0, dryers: 0 };
+            equipmentCounters[tableType] = { compressors: 0, dryers: 0, prime: 0, reprise: 0 };
             calculateStep(currentStep);
             showSuccessMessage(`Tableau ${tableType} effacé !`);
         }
@@ -1380,8 +1390,9 @@
         function addPrimeCEE(tableType) {
             if (tableType === 'existing') return; // Pas de prime pour l'existant
 
+
             const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow('Prime CEE', 'prime', 1, tableType);
+            const row = createEquipmentRow(`Prime CEE ${primeNum}`, 'prime', primeNum, tableType, 'prime');
             
             // Modifier les inputs pour la prime (négative et seulement année 1)
             const inputs = row.querySelectorAll('input');
@@ -1404,8 +1415,9 @@
         function addReprise(tableType) {
             if (tableType === 'existing') return; // Pas de reprise pour l'existant
 
+
             const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow('Reprise équipement', 'reprise', 1, tableType);
+            const row = createEquipmentRow(`Reprise équipement ${repriseNum}`, 'reprise', repriseNum, tableType, 'reprise');
             
             // Modifier les inputs pour la reprise (négative et seulement année 1)
             const inputs = row.querySelectorAll('input');
@@ -1988,9 +2000,9 @@
             };
             
             equipmentCounters = {
-                existing: { compressors: 0, dryers: 0 },
-                solution1: { compressors: 0, dryers: 0 },
-                solution2: { compressors: 0, dryers: 0 }
+                existing: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+                solution1: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+                solution2: { compressors: 0, dryers: 0, prime: 0, reprise: 0 }
             };
             
             Object.values(charts).forEach(chart => {
