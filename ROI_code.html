@@ -1376,7 +1376,7 @@
         // Ajout spécial pour les primes CEE
         function addPrimeCEE(tableType) {
             if (tableType === 'existing') return; // Pas de prime pour l'existant
-            
+
             const tbody = document.getElementById(`${tableType}-tbody`);
             const row = createEquipmentRow('Prime CEE', 'prime', 1, tableType);
             
@@ -1392,13 +1392,15 @@
                     cell.removeChild(input);
                 }
             });
-            
+
             tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Prime CEE ajoutée !');
         }
 
         function addReprise(tableType) {
             if (tableType === 'existing') return; // Pas de reprise pour l'existant
-            
+
             const tbody = document.getElementById(`${tableType}-tbody`);
             const row = createEquipmentRow('Reprise équipement', 'reprise', 1, tableType);
             
@@ -1414,8 +1416,10 @@
                     cell.removeChild(input);
                 }
             });
-            
+
             tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Reprise ajoutée !');
         }
 
         // Calculs pour chaque étape
