@@ -904,6 +904,12 @@
                                 <button class="add-btn" onclick="addDryer('solution1')">
                                     💨 Ajouter Sécheur
                                 </button>
+                                <button class="add-btn prime-btn" onclick="addPrimeCEE('solution1')">
+                                    💰 Ajouter Prime CEE
+                                </button>
+                                <button class="add-btn reprise-btn" onclick="addReprise('solution1')">
+                                    ♻️ Ajouter Reprise
+                                </button>
                             </div>
                         </div>
 
@@ -990,6 +996,12 @@
                                 </button>
                                 <button class="add-btn" onclick="addDryer('solution2')">
                                     💨 Ajouter Sécheur
+                                </button>
+                                <button class="add-btn prime-btn" onclick="addPrimeCEE('solution2')">
+                                    💰 Ajouter Prime CEE
+                                </button>
+                                <button class="add-btn reprise-btn" onclick="addReprise('solution2')">
+                                    ♻️ Ajouter Reprise
                                 </button>
                             </div>
                         </div>
@@ -1165,23 +1177,16 @@
         };
         let charts = {};
         let equipmentCounters = {
-            existing: { compressors: 0, dryers: 0 },
-            solution1: { compressors: 0, dryers: 0 },
-            solution2: { compressors: 0, dryers: 0 }
+            existing: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+            solution1: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+            solution2: { compressors: 0, dryers: 0, prime: 0, reprise: 0 }
         };
 
         // Navigation entre les étapes
         function nextStep() {
             if (currentStep < 4) {
                 calculateStep(currentStep);
-                
-                // Si on est à l'étape 2 et qu'il n'y a pas de Solution 2, aller directement aux résultats
-                if (currentStep === 2 && !hasSolution2Data()) {
-                    currentStep = 4;
-                } else {
-                    currentStep++;
-                }
-                
+                currentStep++;
                 updateUI();
                 calculateStep(currentStep);
             }
@@ -1189,13 +1194,7 @@
 
         function prevStep() {
             if (currentStep > 1) {
-                // Si on est aux résultats et qu'il n'y a pas de Solution 2, revenir à l'étape 2
-                if (currentStep === 4 && !hasSolution2Data()) {
-                    currentStep = 2;
-                } else {
-                    currentStep--;
-                }
-                
+                currentStep--;
                 updateUI();
                 calculateStep(currentStep);
             }
@@ -1218,13 +1217,9 @@
             document.querySelectorAll('.step').forEach((step, index) => {
                 const stepNumber = index + 1;
                 step.classList.remove('active', 'completed');
-                
-                // Masquer l'étape 3 (Solution 2) si pas de données
-                if (stepNumber === 3 && !solution2HasData) {
-                    step.style.display = 'none';
-                } else {
-                    step.style.display = 'flex';
-                }
+
+                // Toujours afficher l'étape 3 pour permettre la saisie éventuelle
+                step.style.display = 'flex';
                 
                 if (stepNumber === currentStep) {
                     step.classList.add('active');
@@ -1236,13 +1231,7 @@
             // Mettre à jour les connecteurs
             document.querySelectorAll('.step-connector').forEach((connector, index) => {
                 connector.classList.remove('completed');
-                
-                // Masquer le connecteur vers Solution 2 si pas de données
-                if (index === 1 && !solution2HasData) {
-                    connector.style.display = 'none';
-                } else {
-                    connector.style.display = 'block';
-                }
+                connector.style.display = 'block';
                 
                 if (index < currentStep - 1) {
                     connector.classList.add('completed');
@@ -1256,6 +1245,7 @@
                     content.classList.add('active');
                 }
             });
+
         }
 
         function hasSolution2Data() {
@@ -1385,13 +1375,23 @@
             });
             
             calculateStep(currentStep);
-            showSuccessMessage(`${equipmentType === 'dryer' ? 'Sécheur' : 'Compresseur'} ${equipmentNum} supprimé !`);
+            let label;
+            if (equipmentType === 'dryer') {
+                label = 'Sécheur';
+            } else if (equipmentType === 'prime') {
+                label = 'Prime CEE';
+            } else if (equipmentType === 'reprise') {
+                label = 'Reprise équipement';
+            } else {
+                label = 'Compresseur';
+            }
+            showSuccessMessage(`${label} ${equipmentNum} supprimé !`);
         }
 
         function clearTable(tableType) {
             const tbody = document.getElementById(`${tableType}-tbody`);
             tbody.innerHTML = '';
-            equipmentCounters[tableType] = { compressors: 0, dryers: 0 };
+            equipmentCounters[tableType] = { compressors: 0, dryers: 0, prime: 0, reprise: 0 };
             calculateStep(currentStep);
             showSuccessMessage(`Tableau ${tableType} effacé !`);
         }
@@ -1399,9 +1399,12 @@
         // Ajout spécial pour les primes CEE
         function addPrimeCEE(tableType) {
             if (tableType === 'existing') return; // Pas de prime pour l'existant
-            
+
+            equipmentCounters[tableType].prime++;
+            const primeNum = equipmentCounters[tableType].prime;
+
             const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow('Prime CEE', 'prime', 1, tableType);
+            const row = createEquipmentRow(`Prime CEE ${primeNum}`, 'prime', primeNum, tableType, 'prime');
             
             // Modifier les inputs pour la prime (négative et seulement année 1)
             const inputs = row.querySelectorAll('input');
@@ -1415,15 +1418,20 @@
                     cell.removeChild(input);
                 }
             });
-            
+
             tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Prime CEE ajoutée !');
         }
 
         function addReprise(tableType) {
             if (tableType === 'existing') return; // Pas de reprise pour l'existant
-            
+
+            equipmentCounters[tableType].reprise++;
+            const repriseNum = equipmentCounters[tableType].reprise;
+
             const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow('Reprise équipement', 'reprise', 1, tableType);
+            const row = createEquipmentRow(`Reprise équipement ${repriseNum}`, 'reprise', repriseNum, tableType, 'reprise');
             
             // Modifier les inputs pour la reprise (négative et seulement année 1)
             const inputs = row.querySelectorAll('input');
@@ -1437,8 +1445,10 @@
                     cell.removeChild(input);
                 }
             });
-            
+
             tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Reprise ajoutée !');
         }
 
         // Calculs pour chaque étape
@@ -2004,9 +2014,9 @@
             };
             
             equipmentCounters = {
-                existing: { compressors: 0, dryers: 0 },
-                solution1: { compressors: 0, dryers: 0 },
-                solution2: { compressors: 0, dryers: 0 }
+                existing: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+                solution1: { compressors: 0, dryers: 0, prime: 0, reprise: 0 },
+                solution2: { compressors: 0, dryers: 0, prime: 0, reprise: 0 }
             };
             
             Object.values(charts).forEach(chart => {
@@ -2028,9 +2038,9 @@
 
         function exportText() {
             const savings1 = calculations.solution1.savings[4];
-            const savings2 = calculations.solution2.savings[4];
-            const bestSolution = savings2 > savings1 ? 2 : 1;
-            const bestSavings = Math.max(savings1, savings2);
+            const savings2 = hasSolution2Data() ? calculations.solution2.savings[4] : 0;
+            const bestSolution = hasSolution2Data() && savings2 > savings1 ? 2 : 1;
+            const bestSavings = hasSolution2Data() ? Math.max(savings1, savings2) : savings1;
             
             let text = "🎯 ANALYSE ROI - ÉQUIPEMENT INDUSTRIEL\n";
             text += "=====================================\n\n";
@@ -2038,7 +2048,11 @@
             text += "📊 INDICATEURS CLÉS:\n";
             text += `-----------------\n`;
             text += `💵 Économies Solution 1: ${formatEuro(savings1)}\n`;
-            text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n\n`;
+            if (hasSolution2Data()) {
+                text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n\n`;
+            } else {
+                text += '\n';
+            }
             
             if (bestSavings > 0) {
                 text += `🎯 RECOMMANDATION: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !\n\n`;
@@ -2048,17 +2062,25 @@
             
             text += "📈 DÉTAIL PAR ANNÉE:\n";
             text += "-----------------\n";
-            text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            if (hasSolution2Data()) {
+                text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            } else {
+                text += "Année\t🔧 Existant\t🚀 Solution 1\t💰 Éco. Sol.1\n";
+            }
             
             for (let i = 0; i < 5; i++) {
                 const year = i + 1;
                 const existingCumul = calculations.existing.cumulative[i];
                 const solution1Cumul = calculations.solution1.cumulative[i];
-                const solution2Cumul = calculations.solution2.cumulative[i];
+                const solution2Cumul = hasSolution2Data() ? calculations.solution2.cumulative[i] : 0;
                 const savings1Year = calculations.solution1.savings[i];
-                const savings2Year = calculations.solution2.savings[i];
-                
-                text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
+                const savings2Year = hasSolution2Data() ? calculations.solution2.savings[i] : 0;
+
+                if (hasSolution2Data()) {
+                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
+                } else {
+                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(savings1Year)}\n`;
+                }
             }
             
             text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
@@ -2083,30 +2105,6 @@
                     document.body.removeChild(successDiv);
                 }
             }, 3000);
-        }
-
-        // Boutons d'actions spéciales pour les solutions
-        function addSpecialButtons(tableType) {
-            if (tableType === 'existing') return;
-            
-            const section = document.querySelector(`#step-${currentStep} .add-equipment-section .add-equipment-controls`);
-            if (!section) return;
-            
-            // Vérifier si les boutons existent déjà
-            if (section.querySelector('.prime-btn')) return;
-            
-            const primeBtn = document.createElement('button');
-            primeBtn.className = 'add-btn prime-btn';
-            primeBtn.innerHTML = '💰 Ajouter Prime CEE';
-            primeBtn.onclick = () => addPrimeCEE(tableType);
-            
-            const repriseBtn = document.createElement('button');
-            repriseBtn.className = 'add-btn reprise-btn';
-            repriseBtn.innerHTML = '♻️ Ajouter Reprise';
-            repriseBtn.onclick = () => addReprise(tableType);
-            
-            section.appendChild(primeBtn);
-            section.appendChild(repriseBtn);
         }
 
         // Gestion des événements
@@ -2138,27 +2136,6 @@
             }
         });
 
-        // Mettre à jour les boutons spéciaux quand on change d'étape
-        function updateSpecialButtons() {
-            if (currentStep === 2) {
-                addSpecialButtons('solution1');
-            } else if (currentStep === 3) {
-                addSpecialButtons('solution2');
-            }
-        }
-
-        // Modifier nextStep pour inclure les boutons spéciaux
-        const originalNextStep = nextStep;
-        nextStep = function() {
-            originalNextStep();
-            updateSpecialButtons();
-        };
-
-        const originalGoToStep = goToStep;
-        goToStep = function(step) {
-            originalGoToStep(step);
-            updateSpecialButtons();
-        };
     </script>
 </body>
 </html>
