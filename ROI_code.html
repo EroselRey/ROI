@@ -1174,14 +1174,7 @@
         function nextStep() {
             if (currentStep < 4) {
                 calculateStep(currentStep);
-                
-                // Si on est à l'étape 2 et qu'il n'y a pas de Solution 2, aller directement aux résultats
-                if (currentStep === 2 && !hasSolution2Data()) {
-                    currentStep = 4;
-                } else {
-                    currentStep++;
-                }
-                
+                currentStep++;
                 updateUI();
                 calculateStep(currentStep);
             }
@@ -1189,13 +1182,7 @@
 
         function prevStep() {
             if (currentStep > 1) {
-                // Si on est aux résultats et qu'il n'y a pas de Solution 2, revenir à l'étape 2
-                if (currentStep === 4 && !hasSolution2Data()) {
-                    currentStep = 2;
-                } else {
-                    currentStep--;
-                }
-                
+                currentStep--;
                 updateUI();
                 calculateStep(currentStep);
             }
