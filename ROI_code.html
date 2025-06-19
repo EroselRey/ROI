@@ -1,292 +1,4 @@
-function exportText() {
-            const savings1 = calculations.solution1.savings[4] || 0;
-            const savings2 = hasSolution2Data() ? (calculations.solution2.savings[4] || 0) : 0;
-            
-            let text = "🎯 ANALYSE ROI - ÉQUIPEMENT INDUSTRIEL\n";
-            text += "=====================================\n\n";
-            
-            text += "📊 INDICATEURS CLÉS:\n";
-            text += "-----------------\n";
-            text += `💵 Économies Solution 1: ${formatEuro(savings1)}\n`;
-            
-            if (hasSolution2Data()) {
-                text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n`;
-                const bestSolution = savings2 > savings1 ? 2 : 1;
-                const bestSavings = Math.max(savings1, savings2);
-                
-                if (bestSavings > 0) {
-                    text += `\n🎯 RECOMMANDATION: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !\n\n`;
-                } else {
-                    text += "\n🎯 ATTENTION: Les solutions ne semblent pas rentables sur 5 ans.\n\n";
-                }
-            } else {
-                if (savings1 > 0) {
-                    text += `\n🎯 RECOMMANDATION: La Solution 1 génère ${formatEuro(savings1)} d'économies sur 5 ans !\n\n`;
-                } else {
-                    text += "\n🎯 ATTENTION: La solution ne semble pas rentable sur 5 ans.\n\n";
-                }
-            }
-            
-            text += "📈 DÉTAIL PAR ANNÉE:\n";
-            text += "-----------------\n";
-            
-            if (hasSolution2Data()) {
-                text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
-                
-                for (let i = 0; i < 5; i++) {
-                    const year = i + 1;
-                    const existingCumul = calculations.existing.cumulative[i] || 0;
-                    const solution1Cumul = calculations.solution1.cumulative[i] || 0;
-                    const solution2Cumul = calculations.solution2.cumulative[i] || 0;
-                    const savings1Year = calculations.solution1.savings[i] || 0;
-                    const savings2Year = calculations.solution2.savings[i] || 0;
-                    
-                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
-                }
-            } else {
-                text += "Année\t🔧 Existant\t🚀 Solution 1\t💰 Économies\n";
-                
-                for (let i = 0; i < 5; i++) {
-                    const year = i + 1;
-                    const existingCumul = calculations.existing.cumulative[i] || 0;
-                    const solution1Cumul = calculations.solution1.cumulative[i] || 0;
-                    const savings1Year = calculations.solution1.savings[i] || 0;
-                    
-                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(savings1Year)}\n`;
-                }
-            }
-            
-            text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
-            text += "🏢 Calculateur ROI Pro - Analyse comparative d'équipements industriels\n";
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showSuccessMessage('Rapport complet copié dans le presse-papier !');
-            }).catch(() => {
-                alert('Erreur lors de la copie. Voici le contenu :\n\n' + text);
-            });
-        }
-
-        function createSolution2Chart() {
-            const ctx = document.getElementById('solution2Chart');
-            if (!ctx) return;
-            
-            if (charts.solution2) {
-                charts.solution2.destroy();
-                charts.solution2 = null;
-            }
-
-            // Si pas de données Solution 2, ne pas créer le graphique
-            if (!hasSolution2Data()) return;
-
-            charts.solution2 = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
-                    datasets: [{
-                        label: '🔧 Équipement Existant',
-                        data: calculations.existing.cumulative || [0, 0, 0, 0, 0],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 6
-                    }, {
-                        label: '🚀 Solution 1',
-                        data: calculations.solution1.cumulative || [0, 0, 0, 0, 0],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 6
-                    }, {
-                        label: '💡 Solution 2',
-                        data: calculations.solution2.cumulative || [0, 0, 0, 0, 0],
-                        borderColor: '#27ae60',
-                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '📈 Comparaison Complète des 3 Options',
-                            font: { size: 16, weight: 'bold' }
-                        },
-                        legend: { position: 'bottom' }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) { return formatEuro(value); }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function createFinalChart() {
-            const ctx = document.getElementById('finalChart');
-            if (!ctx) return;
-            
-            if (charts.final) {
-                charts.final.destroy();
-                charts.final = null;
-            }
-
-            let datasets = [{
-                label: '🔧 Équipement Existant',
-                data: calculations.existing.cumulative || [0, 0, 0, 0, 0],
-                borderColor: '#e74c3c',
-                backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                tension: 0.4,
-                borderWidth: 4,
-                pointRadius: 8
-            }, {
-                label: '🚀 Solution 1 Premium',
-                data: calculations.solution1.cumulative || [0, 0, 0, 0, 0],
-                borderColor: '#3498db',
-                backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                tension: 0.4,
-                borderWidth: 4,
-                pointRadius: 8
-            }];
-
-            // Ajouter Solution 2 seulement si elle a des données
-            if (hasSolution2Data() && calculations.solution2.cumulative) {
-                datasets.push({
-                    label: '💡 Solution 2 Économique',
-                    data: calculations.solution2.cumulative,
-                    borderColor: '#27ae60',
-                    backgroundColor: 'rgba(39, 174, 96, 0.1)',
-                    tension: 0.4,
-                    borderWidth: 4,
-                    pointRadius: 8
-                });
-            }
-
-            charts.final = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '🎯 Analyse Comparative Finale - Évolution sur 5 ans',
-                            font: { size: 18, weight: 'bold' }
-                        },
-                        legend: {
-                            position: 'bottom',
-                            labels: { padding: 20, font: { size: 14, weight: '600' } }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) { return formatEuro(value); }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function showSuccessMessage(message) {
-            const successDiv = document.createElement('div');
-            successDiv.className = 'success-message';
-            successDiv.textContent = message;
-            
-            document.body.appendChild(successDiv);
-            
-            setTimeout(() => {
-                if (document.body.contains(successDiv)) {
-                    document.body.removeChild(successDiv);
-                }
-            }, 3000);
-        }
-
-        // Boutons d'actions spéciales pour les solutions
-        function addSpecialButtons(tableType) {
-            if (tableType === 'existing') return;
-            
-            const section = document.querySelector(`#step-${currentStep} .add-equipment-section .add-equipment-controls`);
-            if (!section) return;
-            
-            // Vérifier si les boutons existent déjà
-            if (section.querySelector('.prime-btn')) return;
-            
-            const primeBtn = document.createElement('button');
-            primeBtn.className = 'add-btn prime-btn';
-            primeBtn.innerHTML = '💰 Ajouter Prime CEE';
-            primeBtn.onclick = () => addPrimeCEE(tableType);
-            
-            const repriseBtn = document.createElement('button');
-            repriseBtn.className = 'add-btn reprise-btn';
-            repriseBtn.innerHTML = '♻️ Ajouter Reprise';
-            repriseBtn.onclick = () => addReprise(tableType);
-            
-            section.appendChild(primeBtn);
-            section.appendChild(repriseBtn);
-        }
-
-        // Gestion des événements
-        document.addEventListener('click', function(e) {
-            const step = e.target.closest('.step[data-step]');
-            if (step) {
-                const stepNumber = parseInt(step.dataset.step);
-                goToStep(stepNumber);
-            }
-        });
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            updateUI();
-            calculateStep(1);
-            
-            // Ajouter un compresseur par défaut pour commencer
-            setTimeout(() => {
-                addCompressor('existing');
-            }, 500);
-            
-            showSuccessMessage('Calculateur ROI chargé avec succès ! 🎯');
-        });
-
-        // Mettre à jour les boutons spéciaux quand on change d'étape
-        function updateSpecialButtons() {
-            if (currentStep === 2) {
-                addSpecialButtons('solution1');
-            } else if (currentStep === 3) {
-                addSpecialButtons('solution2');
-            }
-        }
-
-        // Modifier nextStep pour inclure les boutons spéciaux
-        const originalNextStep = nextStep;
-        nextStep = function() {
-            originalNextStep();
-            updateSpecialButtons();
-        };
-
-        const originalGoToStep = goToStep;
-        goToStep = function(step) {
-            originalGoToStep(step);
-            updateSpecialButtons();
-        };
-    </script>
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -324,6 +36,17 @@ function exportText() {
             color: white;
             padding: 40px 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         .header h1 {
@@ -1013,11 +736,49 @@ function exportText() {
             .add-equipment-controls { justify-content: center; }
             .section-header { flex-direction: column; gap: 15px; }
         }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 50%, #444 100%);
+            color: #f5f5f5;
+        }
+        body.dark-mode .container {
+            background: rgba(30, 30, 30, 0.98);
+        }
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #3f51b5 0%, #1a237e 50%, #0d47a1 100%);
+        }
+        body.dark-mode .progress-bar {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+        body.dark-mode .step-label { color: #ddd; }
+        body.dark-mode .step.active .step-number {
+            background: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
+            color: #fff;
+        }
+        body.dark-mode .step.completed .step-number {
+            background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+        }
+        body.dark-mode .equipment-table th {
+            background: linear-gradient(135deg, #3f51b5 0%, #1a237e 100%);
+        }
+        body.dark-mode .table-container {
+            background: #222;
+            border: 1px solid #444;
+        }
+        body.dark-mode .equipment-table td { border-color: #444; }
+        body.dark-mode .add-btn {
+            background: linear-gradient(135deg, #388e3c, #43a047);
+        }
+        body.dark-mode .btn-control {
+            background: linear-gradient(135deg, #3f51b5, #1a237e);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
+            <button id="themeToggle" class="theme-toggle" aria-label="Basculer le thème">🌙</button>
             <h1>🎯 Calculateur ROI Pro</h1>
             <p>Analyse comparative des solutions d'équipement industriel</p>
         </div>
@@ -2368,6 +2129,13 @@ function exportText() {
             }, 500);
             
             showSuccessMessage('Calculateur ROI chargé avec succès ! 🎯');
+
+            const toggleBtn = document.getElementById('themeToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                });
+            }
         });
 
         // Mettre à jour les boutons spéciaux quand on change d'étape
