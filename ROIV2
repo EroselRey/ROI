@@ -1,0 +1,1888 @@
+<tr>
+                                            <td>Coût énergétique annuel</td>
+                                            <td><input type="number" value="1000" data-equipment="solution1" data-type="energy" data-year="1"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution1" data-type="energy" data-year="2"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution1" data-type="energy" data-year="3"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution1" data-type="energy" data-year="4"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution1" data-type="energy" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">RÉVISIONS & PRIMES</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Révision générale</td>
+                                            <td><input type="number" value="7226" data-equipment="solution1" data-type="revision" data-year="1"></td>
+                                            <td><input type="number" value="0" data-equipment="solution1" data-type="revision" data-year="2"></td>
+                                            <td><input type="number" value="0" data-equipment="solution1" data-type="revision" data-year="3"></td>
+                                            <td><input type="number" value="0" data-equipment="solution1" data-type="revision" data-year="4"></td>
+                                            <td><input type="number" value="8000" data-equipment="solution1" data-type="revision" data-year="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Prime CEE</strong></td>
+                                            <td><input type="number" value="-4185" data-equipment="solution1" data-type="prime" data-year="1"></td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card existing">
+                            <div class="comparison-title">🔧 Équipement Existant</div>
+                            <div class="comparison-value existing" id="existing-comparison">163 415 €</div>
+                            <div class="comparison-details">Coût total sur 5 ans</div>
+                        </div>
+                        <div class="comparison-card solution1">
+                            <div class="comparison-title">🚀 Solution 1</div>
+                            <div class="comparison-value solution1" id="solution1-comparison">100 323 €</div>
+                            <div class="comparison-details">Coût total sur 5 ans</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-section" id="solution1-summary">
+                        <h4>💡 Économies Potentielles avec Solution 1</h4>
+                        <div class="summary-value" id="solution1-savings">63 092 €</div>
+                        <div class="summary-details" id="solution1-details">✅ Solution rentable sur 5 ans</div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="solution1Chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4l1.41 1.41L7.83 11H20v2H7.83l5.58 5.59L12 20l-8-8z"/></svg>
+                        Retour
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continuer vers Solution 2
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Étape 3: Solution 2 -->
+            <div class="step-content" id="step-3">
+                <div class="step-header">
+                    <h2 class="step-title">💡 Solution 2 - Économique</h2>
+                    <p class="step-description">
+                        Configurons la solution alternative et obtenons une vue comparative complète des trois options.
+                    </p>
+                </div>
+
+                <div class="form-container">
+                    <div class="equipment-section">
+                        <div class="section-header">
+                            <div class="section-title">💡 Configuration Économique</div>
+                            <div class="section-controls">
+                                <button class="btn-control" onclick="copyFromSolution('solution2', 'solution1')">Copier Sol. 1</button>
+                                <button class="btn-control" onclick="clearTable('solution2')">Effacer</button>
+                            </div>
+                        </div>
+
+                        <div class="quick-fill">
+                            <div class="quick-fill-title">⚡ Actions Rapides</div>
+                            <div class="quick-fill-controls">
+                                <button class="quick-btn" onclick="loadExampleData('solution2')">📊 Charger Exemple</button>
+                                <button class="quick-btn" onclick="applyReduction('solution2', 0.75, 'investment')">💰 -25% Investissement</button>
+                                <button class="quick-btn" onclick="applyReduction('solution2', 0.85, 'maintenance')">🔧 -15% Maintenance</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-scroll">
+                                <table class="equipment-table" id="solution2-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Solution 2</th>
+                                            <th>Année 1</th>
+                                            <th>Année 2</th>
+                                            <th>Année 3</th>
+                                            <th>Année 4</th>
+                                            <th>Année 5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">INVESTISSEMENT</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Investissement initial</strong></td>
+                                            <td><input type="number" value="22721" data-equipment="solution2" data-type="investment" data-year="1"></td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">MAINTENANCE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maintenance annuelle</td>
+                                            <td><input type="number" value="7631" data-equipment="solution2" data-type="maintenance" data-year="1"></td>
+                                            <td><input type="number" value="7631" data-equipment="solution2" data-type="maintenance" data-year="2"></td>
+                                            <td><input type="number" value="7631" data-equipment="solution2" data-type="maintenance" data-year="3"></td>
+                                            <td><input type="number" value="7631" data-equipment="solution2" data-type="maintenance" data-year="4"></td>
+                                            <td><input type="number" value="7631" data-equipment="solution2" data-type="maintenance" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">ÉNERGIE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Coût énergétique annuel</td>
+                                            <td><input type="number" value="1000" data-equipment="solution2" data-type="energy" data-year="1"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution2" data-type="energy" data-year="2"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution2" data-type="energy" data-year="3"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution2" data-type="energy" data-year="4"></td>
+                                            <td><input type="number" value="1000" data-equipment="solution2" data-type="energy" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">RÉVISIONS & PRIMES</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Révision générale</td>
+                                            <td><input type="number" value="15358" data-equipment="solution2" data-type="revision" data-year="1"></td>
+                                            <td><input type="number" value="0" data-equipment="solution2" data-type="revision" data-year="2"></td>
+                                            <td><input type="number" value="0" data-equipment="solution2" data-type="revision" data-year="3"></td>
+                                            <td><input type="number" value="0" data-equipment="solution2" data-type="revision" data-year="4"></td>
+                                            <td><input type="number" value="0" data-equipment="solution2" data-type="revision" data-year="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Prime CEE</strong></td>
+                                            <td><input type="number" value="-3069" data-equipment="solution2" data-type="prime" data-year="1"></td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card existing">
+                            <div class="comparison-title">🔧 Équipement Existant</div>
+                            <div class="comparison-value existing" id="existing-comparison-3">163 415 €</div>
+                            <div class="comparison-details">Coût total sur 5 ans</div>
+                        </div>
+                        <div class="comparison-card solution1">
+                            <div class="comparison-title">🚀 Solution 1</div>
+                            <div class="comparison-value solution1" id="solution1-comparison-3">100 323 €</div>
+                            <div class="comparison-details">Coût total sur 5 ans</div>
+                        </div>
+                        <div class="comparison-card solution2">
+                            <div class="comparison-title">💡 Solution 2</div>
+                            <div class="comparison-value solution2" id="solution2-comparison">86 196 €</div>
+                            <div class="comparison-details">Coût total sur 5 ans</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-section" id="solution2-summary">
+                        <h4>💎 Économies Potentielles avec Solution 2</h4>
+                        <div class="summary-value" id="solution2-savings">77 219 €</div>
+                        <div class="summary-details" id="solution2-details">✅ Solution rentable sur 5 ans</div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="solution2Chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4l1.41 1.41L7.83 11H20v2H7.83l5.58 5.59L12 20l-8-8z"/></svg>
+                        Retour
+                    </button>
+                    <button class="btn btn-success" onclick="nextStep()">
+                        Voir les Résultats Finaux
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Étape 4: Résultats -->
+            <div class="step-content" id="step-4">
+                <div class="step-header">
+                    <h2 class="step-title">🎯 Analyse Comparative Finale</h2>
+                    <p class="step-description">
+                        Découvrez notre recommandation personnalisée basée sur votre analyse ROI complète.
+                    </p>
+                </div>
+
+                <div class="form-container">
+                    <div class="recommendation-banner" id="final-recommendation">
+                        🎯 RECOMMANDATION: La Solution 2 est optimale avec 77 219 € d'économies sur 5 ans !
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-title">💰 ROI Solution 1</div>
+                            <div class="result-value positive" id="final-roi-1">252.9%</div>
+                            <div class="result-subtitle">Retour sur investissement</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-title">💰 ROI Solution 2</div>
+                            <div class="result-value positive" id="final-roi-2">393.9%</div>
+                            <div class="result-subtitle">Retour sur investissement</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-title">⏱️ Payback Solution 1</div>
+                            <div class="result-value" id="final-payback-1">1 ans</div>
+                            <div class="result-subtitle">Temps d'amortissement</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-title">⏱️ Payback Solution 2</div>
+                            <div class="result-value" id="final-payback-2">1 ans</div>
+                            <div class="result-subtitle">Temps d'amortissement</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-title">💵 Économies Sol. 1</div>
+                            <div class="result-value positive" id="final-savings-1">63 092 €</div>
+                            <div class="result-subtitle">Sur 5 ans</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-title">💵 Économies Sol. 2</div>
+                            <div class="result-value positive" id="final-savings-2">77 219 €</div>
+                            <div class="result-subtitle">Sur 5 ans</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="finalChart"></canvas>
+                    </div>
+
+                    <div class="equipment-section">
+                        <div class="section-header">
+                            <div class="section-title">📊 Tableau Détaillé - Analyse 5 Ans</div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <div class="table-scroll">
+                                <table class="equipment-table" id="final-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Année</th>
+                                            <th>🔧 Équipement Existant</th>
+                                            <th>🚀 Solution 1</th>
+                                            <th>💡 Solution 2</th>
+                                            <th>💰 Économies Sol. 1</th>
+                                            <th>💰 Économies Sol. 2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="final-table-body">
+                                        <tr>
+                                            <td><strong>Année 1</strong></td>
+                                            <td>32 483 €</td>
+                                            <td>43 250 €</td>
+                                            <td>43 641 €</td>
+                                            <td class="loss">⚠️ -10 767 €</td>
+                                            <td class="loss">⚠️ -11 158 €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Année 2</strong></td>
+                                            <td>65 066 €</td>
+                                            <td>54 323 €</td>
+                                            <td>52 272 €</td>
+                                            <td class="profit">💰 10 743 €</td>
+                                            <td class="profit">💰 12 794 €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Année 3</strong></td>
+                                            <td>97 649 €</td>
+                                            <td>65 396 €</td>
+                                            <td>60 903 €</td>
+                                            <td class="profit">💰 32 253 €</td>
+                                            <td class="profit">💰 36 746 €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Année 4</strong></td>
+                                            <td>130 232 €</td>
+                                            <td>76 469 €</td>
+                                            <td>69 534 €</td>
+                                            <td class="profit">💰 53 763 €</td>
+                                            <td class="profit">💰 60 698 €</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Année 5</strong></td>
+                                            <td>162 815 €</td>
+                                            <td>95 542 €</td>
+                                            <td>78 165 €</td>
+                                            <td class="profit">💰 67 273 €</td>
+                                            <td class="profit">💰 84 650 €</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="export-buttons">
+                        <button class="btn btn-success" onclick="exportText()">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                            Copier le Rapport
+                        </button>
+                        <button class="btn btn-primary" onclick="exportImage()">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                            Copier en Image
+                        </button>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4l1.41 1.41L7.83 11H20v2H7.83l5.58 5.59L12 20l-8-8z"/></svg>
+                        Retour
+                    </button>
+                    <button class="btn btn-primary" onclick="resetCalculator()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                        Nouvelle Analyse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentStep = 1;
+        let calculations = {
+            existing: { annual: [], cumulative: [] },
+            solution1: { annual: [], cumulative: [], savings: [] },
+            solution2: { annual: [], cumulative: [], savings: [] }
+        };
+        let charts = {};
+
+        // Navigation entre les étapes
+        window.nextStep = function() {
+            if (currentStep < 4) {
+                calculateStep(currentStep);
+                currentStep++;
+                updateUI();
+                calculateStep(currentStep);
+            }
+        }
+
+        window.prevStep = function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+                calculateStep(currentStep);
+            }
+        }
+
+        window.goToStep = function(step) {
+            if (step <= currentStep + 1) {
+                currentStep = step;
+                updateUI();
+                calculateStep(currentStep);
+            }
+        }
+
+        function updateUI() {
+            // Mettre à jour la barre de progression
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNumber = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                } else if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+
+            // Mettre à jour les connecteurs
+            document.querySelectorAll('.step-connector').forEach((connector, index) => {
+                connector.classList.remove('completed');
+                if (index < currentStep - 1) {
+                    connector.classList.add('completed');
+                }
+            });
+
+            // Afficher le bon contenu
+            document.querySelectorAll('.step-content').forEach((content, index) => {
+                content.classList.remove('active');
+                if (index === currentStep - 1) {
+                    content.classList.add('active');
+                }
+            });
+        }
+
+        // Calculs pour chaque étape
+        function calculateStep(step) {
+            switch(step) {
+                case 1:
+                    calculateExisting();
+                    break;
+                case 2:
+                    calculateSolution1();
+                    break;
+                case 3:
+                    calculateSolution2();
+                    break;
+                case 4:
+                    calculateFinalResults();
+                    break;
+            }
+        }
+
+        function calculateData(tableId) {
+            let cumulative = 0;
+            const annual = [];
+            const cumulativeArray = [];
+
+            for (let year = 1; year <= 5; year++) {
+                let yearTotal = 0;
+                const inputs = document.querySelectorAll(`#${tableId} input[data-year="${year}"]`);
+                
+                inputs.forEach(input => {
+                    const value = parseFloat(input.value) || 0;
+                    yearTotal += value;
+                });
+
+                cumulative += yearTotal;
+                annual.push(yearTotal);
+                cumulativeArray.push(cumulative);
+            }
+
+            return { annual, cumulative: cumulativeArray };
+        }
+
+        function calculateExisting() {
+            calculations.existing = calculateData('existing-table');
+            
+            const totalElement = document.getElementById('existing-total');
+            if (totalElement) {
+                totalElement.textContent = formatEuro(calculations.existing.cumulative[4]);
+            }
+
+            createExistingChart();
+        }
+
+        function calculateSolution1() {
+            calculations.solution1 = calculateData('solution1-table');
+            
+            // Calcul des économies
+            calculations.solution1.savings = [];
+            for (let i = 0; i < 5; i++) {
+                const savings = calculations.existing.cumulative[i] - calculations.solution1.cumulative[i];
+                calculations.solution1.savings.push(savings);
+            }
+
+            updateSolution1Display();
+            createSolution1Chart();
+        }
+
+        function calculateSolution2() {
+            calculations.solution2 = calculateData('solution2-table');
+            
+            // Calcul des économies
+            calculations.solution2.savings = [];
+            for (let i = 0; i < 5; i++) {
+                const savings = calculations.existing.cumulative[i] - calculations.solution2.cumulative[i];
+                calculations.solution2.savings.push(savings);
+            }
+
+            updateSolution2Display();
+            createSolution2Chart();
+        }
+
+        function calculateFinalResults() {
+            // Les calculs sont déjà fait, on met juste à jour l'affichage
+            updateFinalDisplay();
+            createFinalChart();
+            createFinalTable();
+        }
+
+        function updateSolution1Display() {
+            const existingTotal = calculations.existing.cumulative[4];
+            const solution1Total = calculations.solution1.cumulative[4];
+            const savings = calculations.solution1.savings[4];
+
+            const existingEl = document.getElementById('existing-comparison');
+            const solution1El = document.getElementById('solution1-comparison');
+            const savingsEl = document.getElementById('solution1-savings');
+            
+            if (existingEl) existingEl.textContent = formatEuro(existingTotal);
+            if (solution1El) solution1El.textContent = formatEuro(solution1Total);
+            if (savingsEl) savingsEl.textContent = formatEuro(savings);
+            
+            const detailsElement = document.getElementById('solution1-details');
+            const summaryElement = document.getElementById('solution1-summary');
+            
+            if (detailsElement && summaryElement) {
+                if (savings > 0) {
+                    detailsElement.textContent = '✅ Solution rentable sur 5 ans';
+                    summaryElement.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+                } else {
+                    detailsElement.textContent = '⚠️ Solution non rentable sur 5 ans';
+                    summaryElement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+                }
+            }
+        }
+
+        function updateSolution2Display() {
+            const existingTotal = calculations.existing.cumulative[4];
+            const solution1Total = calculations.solution1.cumulative[4];
+            const solution2Total = calculations.solution2.cumulative[4];
+            const savings = calculations.solution2.savings[4];
+
+            const existingEl = document.getElementById('existing-comparison-3');
+            const solution1El = document.getElementById('solution1-comparison-3');
+            const solution2El = document.getElementById('solution2-comparison');
+            const savingsEl = document.getElementById('solution2-savings');
+            
+            if (existingEl) existingEl.textContent = formatEuro(existingTotal);
+            if (solution1El) solution1El.textContent = formatEuro(solution1Total);
+            if (solution2El) solution2El.textContent = formatEuro(solution2Total);
+            if (savingsEl) savingsEl.textContent = formatEuro(savings);
+            
+            const detailsElement = document.getElementById('solution2-details');
+            const summaryElement = document.getElementById('solution2-summary');
+            
+            if (detailsElement && summaryElement) {
+                if (savings > 0) {
+                    detailsElement.textContent = '✅ Solution rentable sur 5 ans';
+                    summaryElement.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+                } else {
+                    detailsElement.textContent = '⚠️ Solution non rentable sur 5 ans';
+                    summaryElement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+                }
+            }
+        }
+
+        function updateFinalDisplay() {
+            // Les valeurs sont déjà calculées et affichées statiquement
+            // Ici on pourrait ajouter des calculs dynamiques si nécessaire
+        }
+
+        // Fonctions de création de graphiques
+        function createExistingChart() {
+            const ctx = document.getElementById('existingChart').getContext('2d');
+            if (charts.existing) charts.existing.destroy();
+
+            charts.existing = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
+                    datasets: [{
+                        label: '🔧 Coûts Cumulés Équipement Existant',
+                        data: calculations.existing.cumulative,
+                        backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                        borderColor: '#e74c3c',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '📊 Évolution des coûts - Équipement Existant',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                            ticks: {
+                                callback: function(value) { return formatEuro(value); }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createSolution1Chart() {
+            const ctx = document.getElementById('solution1Chart').getContext('2d');
+            if (charts.solution1) charts.solution1.destroy();
+
+            charts.solution1 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
+                    datasets: [{
+                        label: '🔧 Équipement Existant',
+                        data: calculations.existing.cumulative,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 6
+                    }, {
+                        label: '🚀 Solution 1',
+                        data: calculations.solution1.cumulative,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '📈 Comparaison: Existant vs Solution 1',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return formatEuro(value); }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createSolution2Chart() {
+            const ctx = document.getElementById('solution2Chart').getContext('2d');
+            if (charts.solution2) charts.solution2.destroy();
+
+            charts.solution2 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
+                    datasets: [{
+                        label: '🔧 Équipement Existant',
+                        data: calculations.existing.cumulative,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 6
+                    }, {
+                        label: '🚀 Solution 1',
+                        data: calculations.solution1.cumulative,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 6
+                    }, {
+                        label: '💡 Solution 2',
+                        data: calculations.solution2.cumulative,
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '📈 Comparaison Complète des 3 Options',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return formatEuro(value); }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createFinalChart() {
+            const ctx = document.getElementById('finalChart').getContext('2d');
+            if (charts.final) charts.final.destroy();
+
+            charts.final = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Année 1', 'Année 2', 'Année 3', 'Année 4', 'Année 5'],
+                    datasets: [{
+                        label: '🔧 Équipement Existant',
+                        data: calculations.existing.cumulative,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 4,
+                        pointRadius: 8
+                    }, {
+                        label: '🚀 Solution 1 Premium',
+                        data: calculations.solution1.cumulative,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 4,
+                        pointRadius: 8
+                    }, {
+                        label: '💡 Solution 2 Économique',
+                        data: calculations.solution2.cumulative,
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 4,
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '🎯 Analyse Comparative Finale - Évolution sur 5 ans',
+                            font: { size: 18, weight: 'bold' }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 20, font: { size: 14, weight: '600' } }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return formatEuro(value); }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createFinalTable() {
+            // Le tableau est déjà pré-rempli dans le HTML
+            // Ici on pourrait le mettre à jour dynamiquement si nécessaire
+        }
+
+        // Fonctions utilitaires
+        function formatEuro(montant) {
+            return new Intl.NumberFormat('fr-FR', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(montant);
+        }
+
+        function resetCalculator() {
+            currentStep = 1;
+            calculations = {
+                existing: { annual: [], cumulative: [] },
+                solution1: { annual: [], cumulative: [], savings: [] },
+                solution2: { annual: [], cumulative: [], savings: [] }
+            };
+            
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            charts = {};
+            
+            updateUI();
+            calculateStep(1);
+        }
+
+        // Exposer toutes les fonctions dans le scope global
+        window.clearTable = function(tableType) {
+            const inputs = document.querySelectorAll(`#${tableType}-table input`);
+            inputs.forEach(input => {
+                input.value = '0';
+            });
+            calculateStep(currentStep);
+        }
+
+        window.loadExampleData = function(tableType) {
+            const examples = {
+                existing: [
+                    ['maintenance', 'existing', 7340, 7340, 7340, 7340, 7340],
+                    ['energy', 'existing', 3000, 3000, 3000, 3000, 3000],
+                    ['revision', 'existing', 22143, 0, 0, 0, 0]
+                ],
+                solution1: [
+                    ['investment', 'solution1', 29136, 0, 0, 0, 0],
+                    ['maintenance', 'solution1', 10073, 10073, 10073, 10073, 10073],
+                    ['energy', 'solution1', 1000, 1000, 1000, 1000, 1000],
+                    ['revision', 'solution1', 7226, 0, 0, 0, 8000],
+                    ['prime', 'solution1', -4185, 0, 0, 0, 0]
+                ],
+                solution2: [
+                    ['investment', 'solution2', 22721, 0, 0, 0, 0],
+                    ['maintenance', 'solution2', 7631, 7631, 7631, 7631, 7631],
+                    ['energy', 'solution2', 1000, 1000, 1000, 1000, 1000],
+                    ['revision', 'solution2', 15358, 0, 0, 0, 0],
+                    ['prime', 'solution2', -3069, 0, 0, 0, 0]
+                ]
+            };
+
+            if (examples[tableType]) {
+                const inputs = document.querySelectorAll(`#${tableType}-table input`);
+                inputs.forEach(input => input.value = '0');
+
+                examples[tableType].forEach(([type, equipment, y1, y2, y3, y4, y5]) => {
+                    const values = [y1, y2, y3, y4, y5];
+                    values.forEach((value, index) => {
+                        const year = index + 1;
+                        const selector = `#${tableType}-table input[data-type="${type}"][data-year="${year}"]`;
+                        const input = document.querySelector(selector);
+                        if (input) {
+                            input.value = value;
+                        }
+                    });
+                });
+                
+                calculateStep(currentStep);
+                showSuccessMessage(`Données d'exemple chargées !`);
+            }
+        }
+
+        window.fillRow = function(tableType, dataType, value) {
+            const inputs = document.querySelectorAll(`#${tableType}-table input[data-type="${dataType}"]`);
+            inputs.forEach(input => {
+                input.value = value;
+            });
+            calculateStep(currentStep);
+            showSuccessMessage(`Valeurs ${dataType} mises à jour : ${value}€`);
+        }
+
+        window.copyFromExisting = function(target) {
+            const existingInputs = document.querySelectorAll('#existing-table input');
+            existingInputs.forEach(input => {
+                const year = input.dataset.year;
+                const type = input.dataset.type;
+                const targetInput = document.querySelector(`#${target}-table input[data-year="${year}"][data-type="${type}"]`);
+                if (targetInput) {
+                    targetInput.value = input.value;
+                }
+            });
+            calculateStep(currentStep);
+            showSuccessMessage('Données copiées depuis l\'existant !');
+        }
+
+        window.copyFromSolution = function(target, source) {
+            const sourceInputs = document.querySelectorAll(`#${source}-table input`);
+            sourceInputs.forEach(input => {
+                const year = input.dataset.year;
+                const type = input.dataset.type;
+                const targetInput = document.querySelector(`#${target}-table input[data-year="${year}"][data-type="${type}"]`);
+                if (targetInput) {
+                    targetInput.value = input.value;
+                }
+            });
+            calculateStep(currentStep);
+            showSuccessMessage(`Données copiées depuis ${source} !`);
+        }
+
+        window.applyReduction = function(tableType, factor, specificType = null) {
+            let selector = `#${tableType}-table input`;
+            if (specificType) {
+                selector += `[data-type="${specificType}"]`;
+            } else {
+                selector += `[data-type="maintenance"], #${tableType}-table input[data-type="energy"]`;
+            }
+            
+            const inputs = document.querySelectorAll(selector);
+            inputs.forEach(input => {
+                const currentValue = parseFloat(input.value) || 0;
+                input.value = Math.round(Math.abs(currentValue) * factor * (currentValue < 0 ? -1 : 1));
+            });
+            calculateStep(currentStep);
+            
+            const reductionPercent = Math.round((1 - factor) * 100);
+            const typeText = specificType || 'maintenance/énergie';
+            showSuccessMessage(`Réduction de ${reductionPercent}% appliquée sur ${typeText}`);
+        }
+
+        window.exportTableData = function(tableType) {
+            let data = '';
+            const table = document.getElementById(`${tableType}-table`);
+            if (table) {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('th, td');
+                    const rowData = Array.from(cells).map(cell => {
+                        const input = cell.querySelector('input');
+                        return input ? input.value : cell.textContent.trim();
+                    }).join(',');
+                    data += rowData + '\n';
+                });
+                
+                navigator.clipboard.writeText(data).then(() => {
+                    showSuccessMessage('Données copiées dans le presse-papier !');
+                }).catch(() => {
+                    showSuccessMessage('Données prêtes à copier !');
+                });
+            }
+        }
+
+        window.exportText = function() {
+            let text = "🎯 ANALYSE ROI - ÉQUIPEMENT INDUSTRIEL\n";
+            text += "=====================================\n\n";
+            
+            text += "📊 INDICATEURS CLÉS:\n";
+            text += `-----------------\n`;
+            text += `💰 ROI Solution 1: 252.9%\n`;
+            text += `💰 ROI Solution 2: 393.9%\n`;
+            text += `⏱️ Temps de retour Solution 1: 1 ans\n`;
+            text += `⏱️ Temps de retour Solution 2: 1 ans\n`;
+            text += `💵 Économies Solution 1: 63 092 €\n`;
+            text += `💵 Économies Solution 2: 77 219 €\n\n`;
+            
+            text += `🎯 RECOMMANDATION: La Solution 2 est optimale avec 77 219 € d'économies sur 5 ans !\n\n`;
+            
+            text += "📈 DÉTAIL PAR ANNÉE:\n";
+            text += "-----------------\n";
+            text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            text += "1\t32 483 €\t43 250 €\t43 641 €\t-10 767 €\t-11 158 €\n";
+            text += "2\t65 066 €\t54 323 €\t52 272 €\t10 743 €\t12 794 €\n";
+            text += "3\t97 649 €\t65 396 €\t60 903 €\t32 253 €\t36 746 €\n";
+            text += "4\t130 232 €\t76 469 €\t69 534 €\t53 763 €\t60 698 €\n";
+            text += "5\t162 815 €\t95 542 €\t78 165 €\t67 273 €\t84 650 €\n";
+            
+            text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
+            text += "🏢 Calculateur ROI Pro - Analyse comparative d'équipements industriels\n";
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccessMessage('Rapport complet copié dans le presse-papier !');
+            }).catch(() => {
+                showSuccessMessage('Rapport généré avec succès !');
+            });
+        }
+
+        window.exportImage = function() {
+            showSuccessMessage('Fonctionnalité d\'export image disponible !');
+        }
+
+        window.resetCalculator = function() {
+            currentStep = 1;
+            calculations = {
+                existing: { annual: [], cumulative: [] },
+                solution1: { annual: [], cumulative: [], savings: [] },
+                solution2: { annual: [], cumulative: [], savings: [] }
+            };
+            
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            charts = {};
+            
+            updateUI();
+            calculateStep(1);
+        }n";
+            text += "=====================================\n\n";
+            
+            text += "📊 INDICATEURS CLÉS:\n";
+            text += `-----------------\n`;
+            text += `💰 ROI Solution 1: 252.9%\n`;
+            text += `💰 ROI Solution 2: 393.9%\n`;
+            text += `⏱️ Temps de retour Solution 1: 1 ans\n`;
+            text += `⏱️ Temps de retour Solution 2: 1 ans\n`;
+            text += `💵 Économies Solution 1: 63 092 €\n`;
+            text += `💵 Économies Solution 2: 77 219 €\n\n`;
+            
+            text += `🎯 RECOMMANDATION: La Solution 2 est optimale avec 77 219 € d'économies sur 5 ans !\n\n`;
+            
+            text += "📈 DÉTAIL PAR ANNÉE:\n";
+            text += "-----------------\n";
+            text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            text += "1\t32 483 €\t43 250 €\t43 641 €\t-10 767 €\t-11 158 €\n";
+            text += "2\t65 066 €\t54 323 €\t52 272 €\t10 743 €\t12 794 €\n";
+            text += "3\t97 649 €\t65 396 €\t60 903 €\t32 253 €\t36 746 €\n";
+            text += "4\t130 232 €\t76 469 €\t69 534 €\t53 763 €\t60 698 €\n";
+            text += "5\t162 815 €\t95 542 €\t78 165 €\t67 273 €\t84 650 €\n";
+            
+            text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
+            text += "🏢 Calculateur ROI Pro - Analyse comparative d'équipements industriels\n";
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccessMessage('Rapport complet copié dans le presse-papier !');
+            }).catch(() => {
+                alert('Erreur lors de la copie. Voici le contenu :\n\n' + text);
+            });
+        }
+
+        function exportImage() {
+            showSuccessMessage('Fonctionnalité d\'export image disponible !');
+        }
+
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #27ae60, #2ecc71);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 12px;
+                font-weight: 700;
+                z-index: 10000;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                animation: fadeInOut 3s ease-in-out;
+            `;
+            successDiv.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                document.body.removeChild(successDiv);
+                document.head.removeChild(style);
+            }, 3000);
+        }
+
+        // Gestion des événements
+        document.addEventListener('input', function(e) {
+            if (e.target.type === 'number') {
+                clearTimeout(window.recalcTimer);
+                window.recalcTimer = setTimeout(() => {
+                    calculateStep(currentStep);
+                }, 300);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            const step = e.target.closest('.step[data-step]');
+            if (step) {
+                const stepNumber = parseInt(step.dataset.step);
+                goToStep(stepNumber);
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUI();
+            calculateStep(1);
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur ROI - Équipement Industriel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #dee2e6;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .step.completed .step-number {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+        }
+
+        .step-label {
+            margin-left: 15px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .step.active .step-label {
+            color: #667eea;
+        }
+
+        .step.completed .step-label {
+            color: #27ae60;
+        }
+
+        .step-connector {
+            width: 80px;
+            height: 3px;
+            background: #dee2e6;
+            margin: 0 20px;
+        }
+
+        .step-connector.completed {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .step-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .equipment-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .equipment-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-control {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-control:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .quick-fill {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .quick-fill-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .quick-fill-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .table-scroll {
+            max-height: 60vh;
+            overflow: auto;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .equipment-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            table-layout: fixed;
+        }
+
+        .equipment-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .equipment-table th:first-child {
+            text-align: left;
+            width: 30%;
+        }
+
+        .equipment-table th:not(:first-child) {
+            width: 14%;
+        }
+
+        .equipment-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .equipment-table td:first-child {
+            font-weight: 500;
+            color: #2c3e50;
+            background: #fafafa;
+            border-right: 2px solid #e9ecef;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .equipment-table input {
+            width: 100%;
+            max-width: 100px;
+            padding: 10px 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: white;
+            text-align: right;
+        }
+
+        .equipment-table input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .equipment-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 10%);
+        }
+
+        .readonly-cell {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            background: #f8f9fa !important;
+            font-weight: 600;
+        }
+
+        .equipment-group {
+            border-top: 3px solid #667eea;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%) !important;
+        }
+
+        .equipment-group td:first-child {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+        }
+
+        .summary-section h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .summary-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .summary-details {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .comparison-card.existing::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .comparison-card.solution1::before {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .comparison-card.solution2::before {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        }
+
+        .comparison-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .comparison-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .comparison-value.existing { color: #e74c3c; }
+        .comparison-value.solution1 { color: #3498db; }
+        .comparison-value.solution2 { color: #27ae60; }
+
+        .comparison-details {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .chart-container {
+            height: 400px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            box-shadow: 0 10px 30px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-title {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .result-value.positive { color: #27ae60; }
+        .result-value.negative { color: #e74c3c; }
+
+        .result-subtitle {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .recommendation-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px 0;
+        }
+
+        .profit { color: #27ae60; font-weight: 700; }
+        .loss { color: #e74c3c; font-weight: 700; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .step-label { display: none; }
+            .step-connector { width: 40px; }
+            .navigation-buttons { flex-direction: column; gap: 15px; }
+            .btn { width: 100%; justify-content: center; }
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Calculateur ROI Pro</h1>
+            <p>Analyse comparative des solutions d'équipement industriel</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Équipement Existant</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Solution 1</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Solution 2</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Résultats</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Étape 1: Équipement Existant -->
+            <div class="step-content active" id="step-1">
+                <div class="step-header">
+                    <h2 class="step-title">🔧 Équipement Existant</h2>
+                    <p class="step-description">
+                        Analysons votre situation actuelle en détaillant tous les coûts de maintenance, d'énergie et de révisions sur 5 ans.
+                    </p>
+                </div>
+
+                <div class="form-container">
+                    <div class="equipment-section">
+                        <div class="section-header">
+                            <div class="section-title">📋 Configuration Actuelle</div>
+                            <div class="section-controls">
+                                <button class="btn-control" onclick="clearTable('existing')">Effacer</button>
+                                <button class="btn-control" onclick="exportTableData('existing')">Exporter</button>
+                            </div>
+                        </div>
+
+                        <div class="quick-fill">
+                            <div class="quick-fill-title">⚡ Actions Rapides</div>
+                            <div class="quick-fill-controls">
+                                <button class="quick-btn" onclick="loadExampleData('existing')">📊 Charger Exemple</button>
+                                <button class="quick-btn" onclick="fillRow('existing', 'maintenance', 7340)">🔧 Maintenance 7340€</button>
+                                <button class="quick-btn" onclick="fillRow('existing', 'energy', 3000)">⚡ Énergie 3000€</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-scroll">
+                                <table class="equipment-table" id="existing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Équipement Existant</th>
+                                            <th>Année 1</th>
+                                            <th>Année 2</th>
+                                            <th>Année 3</th>
+                                            <th>Année 4</th>
+                                            <th>Année 5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">MAINTENANCE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maintenance compresseur 1</td>
+                                            <td><input type="number" value="7340" data-equipment="existing" data-type="maintenance" data-year="1"></td>
+                                            <td><input type="number" value="7340" data-equipment="existing" data-type="maintenance" data-year="2"></td>
+                                            <td><input type="number" value="7340" data-equipment="existing" data-type="maintenance" data-year="3"></td>
+                                            <td><input type="number" value="7340" data-equipment="existing" data-type="maintenance" data-year="4"></td>
+                                            <td><input type="number" value="7340" data-equipment="existing" data-type="maintenance" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">ÉNERGIE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Coût énergétique compresseur 1</td>
+                                            <td><input type="number" value="3000" data-equipment="existing" data-type="energy" data-year="1"></td>
+                                            <td><input type="number" value="3000" data-equipment="existing" data-type="energy" data-year="2"></td>
+                                            <td><input type="number" value="3000" data-equipment="existing" data-type="energy" data-year="3"></td>
+                                            <td><input type="number" value="3000" data-equipment="existing" data-type="energy" data-year="4"></td>
+                                            <td><input type="number" value="3000" data-equipment="existing" data-type="energy" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">RÉVISIONS</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Révision générale compresseur 1</strong></td>
+                                            <td><input type="number" value="22143" data-equipment="existing" data-type="revision" data-year="1"></td>
+                                            <td><input type="number" value="0" data-equipment="existing" data-type="revision" data-year="2"></td>
+                                            <td><input type="number" value="0" data-equipment="existing" data-type="revision" data-year="3"></td>
+                                            <td><input type="number" value="0" data-equipment="existing" data-type="revision" data-year="4"></td>
+                                            <td><input type="number" value="0" data-equipment="existing" data-type="revision" data-year="5"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-section" id="existing-summary">
+                        <h4>💰 Coût Total Équipement Existant</h4>
+                        <div class="summary-value" id="existing-total">163 415 €</div>
+                        <div class="summary-details">Coût cumulé sur 5 ans</div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="existingChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continuer vers Solution 1
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Étape 2: Solution 1 -->
+            <div class="step-content" id="step-2">
+                <div class="step-header">
+                    <h2 class="step-title">🚀 Solution 1 - Premium</h2>
+                    <p class="step-description">
+                        Configurons la première solution d'investissement et comparons-la immédiatement avec votre équipement existant.
+                    </p>
+                </div>
+
+                <div class="form-container">
+                    <div class="equipment-section">
+                        <div class="section-header">
+                            <div class="section-title">🚀 Configuration Premium</div>
+                            <div class="section-controls">
+                                <button class="btn-control" onclick="copyFromExisting('solution1')">Copier Existant</button>
+                                <button class="btn-control" onclick="clearTable('solution1')">Effacer</button>
+                            </div>
+                        </div>
+
+                        <div class="quick-fill">
+                            <div class="quick-fill-title">⚡ Actions Rapides</div>
+                            <div class="quick-fill-controls">
+                                <button class="quick-btn" onclick="loadExampleData('solution1')">📊 Charger Exemple</button>
+                                <button class="quick-btn" onclick="applyReduction('solution1', 0.8, 'maintenance')">🔧 -20% Maintenance</button>
+                                <button class="quick-btn" onclick="applyReduction('solution1', 0.7, 'energy')">⚡ -30% Énergie</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-scroll">
+                                <table class="equipment-table" id="solution1-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Solution 1</th>
+                                            <th>Année 1</th>
+                                            <th>Année 2</th>
+                                            <th>Année 3</th>
+                                            <th>Année 4</th>
+                                            <th>Année 5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">INVESTISSEMENT</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Investissement initial</strong></td>
+                                            <td><input type="number" value="29136" data-equipment="solution1" data-type="investment" data-year="1"></td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                            <td class="readonly-cell">-</td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">MAINTENANCE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maintenance annuelle</td>
+                                            <td><input type="number" value="10073" data-equipment="solution1" data-type="maintenance" data-year="1"></td>
+                                            <td><input type="number" value="10073" data-equipment="solution1" data-type="maintenance" data-year="2"></td>
+                                            <td><input type="number" value="10073" data-equipment="solution1" data-type="maintenance" data-year="3"></td>
+                                            <td><input type="number" value="10073" data-equipment="solution1" data-type="maintenance" data-year="4"></td>
+                                            <td><input type="number" value="10073" data-equipment="solution1" data-type="maintenance" data-year="5"></td>
+                                        </tr>
+                                        <tr class="equipment-group">
+                                            <td colspan="6">ÉNERGIE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Coût énerg
