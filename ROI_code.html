@@ -1174,14 +1174,7 @@
         function nextStep() {
             if (currentStep < 4) {
                 calculateStep(currentStep);
-                
-                // Si on est à l'étape 2 et qu'il n'y a pas de Solution 2, aller directement aux résultats
-                if (currentStep === 2 && !hasSolution2Data()) {
-                    currentStep = 4;
-                } else {
-                    currentStep++;
-                }
-                
+                currentStep++;
                 updateUI();
                 calculateStep(currentStep);
             }
@@ -1189,13 +1182,7 @@
 
         function prevStep() {
             if (currentStep > 1) {
-                // Si on est aux résultats et qu'il n'y a pas de Solution 2, revenir à l'étape 2
-                if (currentStep === 4 && !hasSolution2Data()) {
-                    currentStep = 2;
-                } else {
-                    currentStep--;
-                }
-                
+                currentStep--;
                 updateUI();
                 calculateStep(currentStep);
             }
@@ -1218,13 +1205,9 @@
             document.querySelectorAll('.step').forEach((step, index) => {
                 const stepNumber = index + 1;
                 step.classList.remove('active', 'completed');
-                
-                // Masquer l'étape 3 (Solution 2) si pas de données
-                if (stepNumber === 3 && !solution2HasData) {
-                    step.style.display = 'none';
-                } else {
-                    step.style.display = 'flex';
-                }
+
+                // Toujours afficher l'étape 3 pour permettre la saisie éventuelle
+                step.style.display = 'flex';
                 
                 if (stepNumber === currentStep) {
                     step.classList.add('active');
@@ -1236,13 +1219,7 @@
             // Mettre à jour les connecteurs
             document.querySelectorAll('.step-connector').forEach((connector, index) => {
                 connector.classList.remove('completed');
-                
-                // Masquer le connecteur vers Solution 2 si pas de données
-                if (index === 1 && !solution2HasData) {
-                    connector.style.display = 'none';
-                } else {
-                    connector.style.display = 'block';
-                }
+                connector.style.display = 'block';
                 
                 if (index < currentStep - 1) {
                     connector.classList.add('completed');
@@ -2028,9 +2005,9 @@
 
         function exportText() {
             const savings1 = calculations.solution1.savings[4];
-            const savings2 = calculations.solution2.savings[4];
-            const bestSolution = savings2 > savings1 ? 2 : 1;
-            const bestSavings = Math.max(savings1, savings2);
+            const savings2 = hasSolution2Data() ? calculations.solution2.savings[4] : 0;
+            const bestSolution = hasSolution2Data() && savings2 > savings1 ? 2 : 1;
+            const bestSavings = hasSolution2Data() ? Math.max(savings1, savings2) : savings1;
             
             let text = "🎯 ANALYSE ROI - ÉQUIPEMENT INDUSTRIEL\n";
             text += "=====================================\n\n";
@@ -2038,7 +2015,11 @@
             text += "📊 INDICATEURS CLÉS:\n";
             text += `-----------------\n`;
             text += `💵 Économies Solution 1: ${formatEuro(savings1)}\n`;
-            text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n\n`;
+            if (hasSolution2Data()) {
+                text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n\n`;
+            } else {
+                text += '\n';
+            }
             
             if (bestSavings > 0) {
                 text += `🎯 RECOMMANDATION: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !\n\n`;
@@ -2048,17 +2029,25 @@
             
             text += "📈 DÉTAIL PAR ANNÉE:\n";
             text += "-----------------\n";
-            text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            if (hasSolution2Data()) {
+                text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
+            } else {
+                text += "Année\t🔧 Existant\t🚀 Solution 1\t💰 Éco. Sol.1\n";
+            }
             
             for (let i = 0; i < 5; i++) {
                 const year = i + 1;
                 const existingCumul = calculations.existing.cumulative[i];
                 const solution1Cumul = calculations.solution1.cumulative[i];
-                const solution2Cumul = calculations.solution2.cumulative[i];
+                const solution2Cumul = hasSolution2Data() ? calculations.solution2.cumulative[i] : 0;
                 const savings1Year = calculations.solution1.savings[i];
-                const savings2Year = calculations.solution2.savings[i];
-                
-                text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
+                const savings2Year = hasSolution2Data() ? calculations.solution2.savings[i] : 0;
+
+                if (hasSolution2Data()) {
+                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
+                } else {
+                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(savings1Year)}\n`;
+                }
             }
             
             text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
