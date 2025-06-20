@@ -1227,9 +1227,13 @@
                     </div>
 
                     <div class="export-buttons">
-                        <button class="btn btn-primary" onclick="exportImage()">
+                        <button class="btn btn-primary" onclick="exportImage('vertical')">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                            📸 Générer le Rapport Worthington Creyssensac
+                            📸 Rapport (Vertical - Word)
+                        </button>
+                        <button class="btn btn-primary" onclick="exportImage('horizontal')">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                            📸 Rapport (Horizontal - PPT)
                         </button>
                     </div>
                 </div>
@@ -2171,7 +2175,7 @@
         }
 
         // Fonction d'export d'image améliorée et plus robuste
-        function exportImage() {
+        function exportImage(orientation = 'vertical') {
             // Créer un overlay de chargement
             const loadingOverlay = document.createElement('div');
             loadingOverlay.className = 'loading-overlay';
@@ -2185,7 +2189,7 @@
             // Attendre un petit délai pour que l'overlay s'affiche
             setTimeout(() => {
                 try {
-                    generateReportImage();
+                    generateReportImage(orientation);
                 } catch (error) {
                     console.error('Erreur lors de la génération:', error);
                     handleExportError();
@@ -2193,14 +2197,15 @@
             }, 100);
         }
 
-        function generateReportImage() {
+        function generateReportImage(orientation = 'vertical') {
             // Créer un conteneur temporaire pour le rapport complet
             const reportContainer = document.createElement('div');
             reportContainer.className = 'export-container';
             reportContainer.style.position = 'absolute';
             reportContainer.style.top = '-10000px';
             reportContainer.style.left = '0';
-            reportContainer.style.width = '1200px';
+            const exportWidth = orientation === 'horizontal' ? 1600 : 1200;
+            reportContainer.style.width = exportWidth + 'px';
             reportContainer.style.zIndex = '-1';
             reportContainer.style.backgroundColor = '#ffffff';
             
@@ -2230,8 +2235,6 @@
                 reportContainer.appendChild(resultsClone);
             }
 
-            // Créer une représentation statique du graphique au lieu d'un canvas
-            createStaticChart(reportContainer);
 
             // Tableau détaillé
             const tableSection = document.querySelector('#step-4 .equipment-section');
@@ -2267,70 +2270,16 @@
 
             // Attendre un peu que le contenu soit rendu puis capturer
             setTimeout(() => {
-                captureReportImage(reportContainer);
+                captureReportImage(reportContainer, exportWidth);
             }, 300);
         }
 
-        function createStaticChart(container) {
-            // Créer une représentation visuelle simple du graphique sans Canvas
-            const chartSection = document.createElement('div');
-            chartSection.style.background = 'white';
-            chartSection.style.borderRadius = '20px';
-            chartSection.style.padding = '25px';
-            chartSection.style.margin = '30px 0';
-            chartSection.style.boxShadow = '0 20px 40px rgba(27, 54, 93, 0.08)';
-            chartSection.style.minHeight = '400px';
 
-            const chartTitle = document.createElement('h3');
-            chartTitle.textContent = '📈 Évolution Comparative des Coûts sur 5 ans';
-            chartTitle.style.textAlign = 'center';
-            chartTitle.style.color = '#1B365D';
-            chartTitle.style.marginBottom = '30px';
-            chartTitle.style.fontSize = '1.5rem';
-            chartTitle.style.fontWeight = 'bold';
-            chartSection.appendChild(chartTitle);
-
-            // Créer un tableau de données visuelles
-            const dataTable = document.createElement('table');
-            dataTable.style.width = '100%';
-            dataTable.style.borderCollapse = 'collapse';
-            dataTable.style.fontSize = '14px';
-
-            const headerRow = document.createElement('tr');
-            headerRow.innerHTML = `
-                <th style="padding: 15px; background: #1B365D; color: white; text-align: center;">Année</th>
-                <th style="padding: 15px; background: #D12C47; color: white; text-align: center;">🔧 Équipement Existant</th>
-                <th style="padding: 15px; background: #1B365D; color: white; text-align: center;">🚀 Solution Worthington Creyssensac</th>
-                <th style="padding: 15px; background: #27ae60; color: white; text-align: center;">💰 Économies</th>
-            `;
-            dataTable.appendChild(headerRow);
-
-            // Ajouter les données
-            for (let i = 0; i < 5; i++) {
-                const year = i + 1;
-                const existingCumul = calculations.existing.cumulative ? (calculations.existing.cumulative[i] || 0) : 0;
-                const solution1Cumul = calculations.solution1.cumulative ? (calculations.solution1.cumulative[i] || 0) : 0;
-                const savings = calculations.solution1.savings ? (calculations.solution1.savings[i] || 0) : 0;
-                
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid #e9ecef';
-                row.innerHTML = `
-                    <td style="padding: 12px; text-align: center; font-weight: bold;">Année ${year}</td>
-                    <td style="padding: 12px; text-align: center; color: #D12C47; font-weight: 600;">${formatEuro(existingCumul)}</td>
-                    <td style="padding: 12px; text-align: center; color: #1B365D; font-weight: 600;">${formatEuro(solution1Cumul)}</td>
-                    <td style="padding: 12px; text-align: center; color: ${savings > 0 ? '#27ae60' : '#D12C47'}; font-weight: 600;">${formatEuro(savings)}</td>
-                `;
-                dataTable.appendChild(row);
-            }
-
-            chartSection.appendChild(dataTable);
-            container.appendChild(chartSection);
-        }
-
-        function captureReportImage(container) {
+        function captureReportImage(container, exportWidth) {
+            const canvasData = Array.from(container.querySelectorAll('canvas')).map(c => c.toDataURL('image/png'));
             const options = {
                 backgroundColor: '#ffffff',
-                width: 1200,
+                width: exportWidth,
                 height: container.scrollHeight,
                 scale: 1.5,
                 useCORS: true,
@@ -2349,12 +2298,14 @@
                         clonedContainer.style.transform = 'none';
                     }
                     
-                    // Enlever tous les canvas qui pourraient causer des problèmes
+                    // Remplacer les canvases par des images pour la capture
                     const canvases = clonedDoc.querySelectorAll('canvas');
-                    canvases.forEach(canvas => {
-                        if (canvas.parentNode) {
-                            canvas.parentNode.removeChild(canvas);
-                        }
+                    canvases.forEach((canvas, idx) => {
+                        const img = clonedDoc.createElement('img');
+                        img.src = canvasData[idx];
+                        img.style.width = canvas.style.width || canvas.width + 'px';
+                        img.style.height = canvas.style.height || canvas.height + 'px';
+                        canvas.parentNode.replaceChild(img, canvas);
                     });
                 }
             };
