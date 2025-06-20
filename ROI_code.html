@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur ROI - Worthington Creyssensac Creyssensac</title>
+    <title>Calculateur ROI - Worthington Creyssensac</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -810,6 +810,32 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Styles spéciaux pour l'export */
+        .export-chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(27, 54, 93, 0.08);
+            height: auto;
+            min-height: 350px;
+        }
+
+        .export-chart-container canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        .export-chart-title {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1B365D;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
         }
 
         @media (max-width: 768px) {
@@ -2174,14 +2200,14 @@
             showSuccessMessage('Calculateur Worthington Creyssensac réinitialisé avec succès !');
         }
 
-        // Fonction d'export d'image améliorée et plus robuste
+        // Fonction d'export d'image améliorée et complète
         function exportImage(orientation = 'vertical') {
             // Créer un overlay de chargement
             const loadingOverlay = document.createElement('div');
             loadingOverlay.className = 'loading-overlay';
             loadingOverlay.innerHTML = `
                 <div class="loading-spinner"></div>
-                <div>Génération du rapport en cours...</div>
+                <div>Génération du rapport complet en cours...</div>
                 <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">Veuillez patienter quelques secondes</div>
             `;
             document.body.appendChild(loadingOverlay);
@@ -2189,7 +2215,7 @@
             // Attendre un petit délai pour que l'overlay s'affiche
             setTimeout(() => {
                 try {
-                    generateReportImage(orientation);
+                    generateCompleteReport(orientation);
                 } catch (error) {
                     console.error('Erreur lors de la génération:', error);
                     handleExportError();
@@ -2197,101 +2223,644 @@
             }, 100);
         }
 
-        function generateReportImage(orientation = 'vertical') {
+        function generateCompleteReport(orientation = 'vertical') {
             // Créer un conteneur temporaire pour le rapport complet
             const reportContainer = document.createElement('div');
             reportContainer.className = 'export-container';
             reportContainer.style.position = 'absolute';
             reportContainer.style.top = '-10000px';
             reportContainer.style.left = '0';
-            const exportWidth = orientation === 'horizontal' ? 1600 : 1200;
-            reportContainer.style.width = exportWidth + 'px';
+            
+            // Dimensions optimisées selon l'orientation
+            let exportWidth, containerLayout;
+            if (orientation === 'horizontal') {
+                exportWidth = 1920; // Format slide PowerPoint
+                containerLayout = 'horizontal';
+                reportContainer.style.width = exportWidth + 'px';
+                reportContainer.style.padding = '30px';
+            } else {
+                exportWidth = 1200; // Format document Word
+                containerLayout = 'vertical';
+                reportContainer.style.width = exportWidth + 'px';
+                reportContainer.style.padding = '40px';
+            }
+            
             reportContainer.style.zIndex = '-1';
             reportContainer.style.backgroundColor = '#ffffff';
             
-            // En-tête du rapport
-            const reportHeader = document.createElement('div');
-            reportHeader.className = 'report-header-export';
-            reportHeader.innerHTML = `
-                <h1>🎯 Rapport ROI Worthington Creyssensac</h1>
-                <p>Analyse comparative des solutions d'air comprimé industriel</p>
-                <p style="font-size: 1rem; margin-top: 15px;">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
-            `;
-            reportContainer.appendChild(reportHeader);
-
-            // Bannière de recommandation
-            const recommendation = document.getElementById('final-recommendation');
-            if (recommendation) {
-                const recClone = recommendation.cloneNode(true);
-                recClone.style.marginBottom = '30px';
-                reportContainer.appendChild(recClone);
+            if (orientation === 'horizontal') {
+                // Mode horizontal : Mise en page slide PowerPoint
+                createHorizontalLayout(reportContainer);
+            } else {
+                // Mode vertical : Mise en page document Word
+                createVerticalLayout(reportContainer);
             }
 
-            // Grille des résultats
-            const resultsGrid = document.querySelector('.results-grid');
-            if (resultsGrid) {
-                const resultsClone = resultsGrid.cloneNode(true);
-                resultsClone.style.marginBottom = '30px';
-                reportContainer.appendChild(resultsClone);
-            }
+            // Ajouter le conteneur au document
+            document.body.appendChild(reportContainer);
 
-            // Graphiques
-            const chartIds = ['existingChart','solution1Chart','solution2Chart','finalChart'];
+            // Capturer tous les canvas et les stocker
             const canvasData = [];
+            const chartIds = ['existingChart', 'solution1Chart', 'solution2Chart', 'finalChart'];
             chartIds.forEach(id => {
                 const canvas = document.getElementById(id);
-                if (canvas) {
-                    const containerClone = canvas.parentElement.cloneNode(true);
-                    containerClone.style.marginBottom = '30px';
-                    reportContainer.appendChild(containerClone);
-                    canvasData.push(canvas.toDataURL('image/png'));
+                if (canvas && charts[id.replace('Chart', '')]) {
+                    try {
+                        canvasData.push({
+                            id: id,
+                            data: canvas.toDataURL('image/png', 0.9)
+                        });
+                    } catch (e) {
+                        console.warn(`Impossible de capturer le canvas ${id}:`, e);
+                    }
                 }
             });
 
-            // Tableau détaillé
-            const tableSection = document.querySelector('#step-4 .equipment-section');
-            if (tableSection) {
-                const tableClone = tableSection.cloneNode(true);
-                tableClone.style.marginBottom = '30px';
-                
-                // Nettoyer les éléments interactifs du tableau cloné
-                const buttons = tableClone.querySelectorAll('button');
-                buttons.forEach(btn => btn.remove());
-                
-                reportContainer.appendChild(tableClone);
+            // Attendre un peu que le contenu soit rendu puis capturer
+            setTimeout(() => {
+                captureCompleteReport(reportContainer, exportWidth, canvasData, orientation);
+            }, 500);
+        }
+
+        function createHorizontalLayout(container) {
+            // En-tête compact pour slide
+            const reportHeader = document.createElement('div');
+            reportHeader.style.textAlign = 'center';
+            reportHeader.style.marginBottom = '20px';
+            reportHeader.style.padding = '20px';
+            reportHeader.style.background = 'linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%)';
+            reportHeader.style.color = 'white';
+            reportHeader.style.borderRadius = '10px';
+            reportHeader.innerHTML = `
+                <h1 style="font-size: 2rem; margin-bottom: 8px;">🎯 ROI Worthington Creyssensac</h1>
+                <p style="font-size: 1rem;">Analyse comparative - ${new Date().toLocaleDateString('fr-FR')}</p>
+            `;
+            container.appendChild(reportHeader);
+
+            // Recommandation compacte
+            const recommendation = document.getElementById('final-recommendation');
+            if (recommendation && recommendation.textContent) {
+                const recClone = document.createElement('div');
+                recClone.style.background = 'linear-gradient(135deg, #D12C47 0%, #E74C3C 100%)';
+                recClone.style.color = 'white';
+                recClone.style.padding = '15px';
+                recClone.style.borderRadius = '20px';
+                recClone.style.textAlign = 'center';
+                recClone.style.marginBottom = '20px';
+                recClone.style.fontWeight = '700';
+                recClone.style.fontSize = '1.1rem';
+                recClone.textContent = recommendation.textContent;
+                container.appendChild(recClone);
             }
 
-            // Pied de page
+            // Layout principal en 2 colonnes
+            const mainLayout = document.createElement('div');
+            mainLayout.style.display = 'grid';
+            mainLayout.style.gridTemplateColumns = '1fr 1fr';
+            mainLayout.style.gap = '30px';
+            mainLayout.style.marginBottom = '20px';
+
+            // Colonne gauche : KPIs
+            const leftColumn = document.createElement('div');
+            
+            const kpiTitle = document.createElement('div');
+            kpiTitle.style.fontSize = '1.2rem';
+            kpiTitle.style.fontWeight = '700';
+            kpiTitle.style.color = '#1B365D';
+            kpiTitle.style.marginBottom = '15px';
+            kpiTitle.style.textAlign = 'center';
+            kpiTitle.textContent = '📊 Indicateurs Clés';
+            leftColumn.appendChild(kpiTitle);
+            
+            // Créer les KPIs manuellement avec les vraies données
+            const kpiContainer = createKPIContainer();
+            if (kpiContainer) {
+                leftColumn.appendChild(kpiContainer);
+            }
+
+            // Colonne droite : Graphique principal
+            const rightColumn = document.createElement('div');
+            
+            const chartTitle = document.createElement('div');
+            chartTitle.style.fontSize = '1.2rem';
+            chartTitle.style.fontWeight = '700';
+            chartTitle.style.color = '#1B365D';
+            chartTitle.style.marginBottom = '15px';
+            chartTitle.style.textAlign = 'center';
+            chartTitle.textContent = '📈 Évolution Comparative';
+            rightColumn.appendChild(chartTitle);
+            
+            const finalChartContainer = createExportChart('finalChart', '', 'horizontal', false);
+            if (finalChartContainer) {
+                finalChartContainer.style.height = '400px';
+                const titleEl = finalChartContainer.querySelector('.export-chart-title');
+                if (titleEl) titleEl.style.display = 'none';
+                rightColumn.appendChild(finalChartContainer);
+            }
+
+            mainLayout.appendChild(leftColumn);
+            mainLayout.appendChild(rightColumn);
+            container.appendChild(mainLayout);
+
+            // Tableau en bas (compact) avec données correctes
+            const tableSection = createExportTable(true); // true = compact pour horizontal
+            if (tableSection) {
+                container.appendChild(tableSection);
+            }
+
+            // Pied de page compact
+            const footer = document.createElement('div');
+            footer.style.textAlign = 'center';
+            footer.style.padding = '15px';
+            footer.style.background = 'linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%)';
+            footer.style.color = 'white';
+            footer.style.borderRadius = '8px';
+            footer.style.marginTop = '20px';
+            footer.innerHTML = `
+                <p style="font-size: 1rem; margin: 0;">📞 Worthington Creyssensac - Expert en solutions d'air comprimé</p>
+                <p style="font-size: 0.9rem; margin: 5px 0 0 0; opacity: 0.9;">🌐 www.worthington-creyssensac.com</p>
+            `;
+            container.appendChild(footer);
+        }
+
+        function createVerticalLayout(container) {
+            // En-tête du rapport avec logo et titre principal
+            const reportHeader = document.createElement('div');
+            reportHeader.className = 'report-header-export';
+            reportHeader.innerHTML = `
+                <h1>🎯 Calculateur ROI Worthington Creyssensac</h1>
+                <p>Analyse comparative des solutions d'air comprimé industriel</p>
+                <p style="font-size: 1rem; margin-top: 15px;">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
+            `;
+            container.appendChild(reportHeader);
+
+            // Bannière de recommandation principale
+            const recommendation = document.getElementById('final-recommendation');
+            if (recommendation && recommendation.textContent) {
+                const recClone = document.createElement('div');
+                recClone.style.background = 'linear-gradient(135deg, #D12C47 0%, #E74C3C 100%)';
+                recClone.style.color = 'white';
+                recClone.style.padding = '25px';
+                recClone.style.borderRadius = '20px';
+                recClone.style.textAlign = 'center';
+                recClone.style.marginBottom = '30px';
+                recClone.style.fontWeight = '700';
+                recClone.style.fontSize = '1.3rem';
+                recClone.textContent = recommendation.textContent;
+                container.appendChild(recClone);
+            }
+
+            // Section des KPIs principaux
+            const sectionTitle = document.createElement('div');
+            sectionTitle.className = 'export-chart-title';
+            sectionTitle.textContent = '📊 Indicateurs Clés de Performance (KPIs)';
+            container.appendChild(sectionTitle);
+            
+            const kpiContainer = createKPIContainer();
+            if (kpiContainer) {
+                kpiContainer.style.marginBottom = '40px';
+                kpiContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                container.appendChild(kpiContainer);
+            }
+
+            // Graphique principal de comparaison finale
+            const finalChartContainer = createExportChart('finalChart', 
+                '📈 Analyse Comparative Finale - Évolution sur 5 ans', 'vertical');
+            if (finalChartContainer) {
+                container.appendChild(finalChartContainer);
+            }
+
+            // Tableau détaillé des résultats avec données correctes
+            const tableSectionTitle = document.createElement('div');
+            tableSectionTitle.className = 'export-chart-title';
+            tableSectionTitle.textContent = '📋 Détail Financier - Analyse 5 Ans';
+            tableSectionTitle.style.marginTop = '30px';
+            container.appendChild(tableSectionTitle);
+            
+            const tableSection = createExportTable(false); // false = pas compact pour vertical
+            if (tableSection) {
+                tableSection.style.marginBottom = '30px';
+                container.appendChild(tableSection);
+            }
+
+            // Pied de page avec informations de contact
             const footer = document.createElement('div');
             footer.style.textAlign = 'center';
             footer.style.padding = '30px';
             footer.style.background = 'linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%)';
             footer.style.color = 'white';
             footer.style.borderRadius = '15px';
-            footer.style.marginTop = '30px';
+            footer.style.marginTop = '40px';
             footer.innerHTML = `
-                <h3 style="margin-bottom: 15px;">📞 Worthington Creyssensac Creyssensac</h3>
+                <h3 style="margin-bottom: 15px;">📞 Worthington Creyssensac</h3>
                 <p style="font-size: 1.1rem; margin-bottom: 10px;">Expert en solutions d'air comprimé industriel</p>
-                <p style="font-size: 1rem; opacity: 0.9;">🌐 www.Worthington Creyssensac-creyssensac.com</p>
+                <p style="font-size: 1rem; opacity: 0.9;">🌐 www.worthington-creyssensac.com</p>
                 <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">Contactez nos experts pour une étude personnalisée</p>
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Ce rapport a été généré automatiquement par le Calculateur ROI Worthington Creyssensac</p>
+                </div>
             `;
-            reportContainer.appendChild(footer);
-
-            // Ajouter le conteneur au document
-            document.body.appendChild(reportContainer);
-
-            // Attendre un peu que le contenu soit rendu puis capturer
-            setTimeout(() => {
-                captureReportImage(reportContainer, exportWidth, canvasData);
-            }, 300);
+            container.appendChild(footer);
         }
 
-        function captureReportImage(container, exportWidth, canvasData = []) {
+        // Nouvelle fonction pour créer les KPIs de manière sécurisée
+        function createKPIContainer() {
+            const hasRealSolution2Data = hasSolution2Data();
+            const savings1 = calculations.solution1.savings ? (calculations.solution1.savings[4] || 0) : 0;
+            const savings2 = calculations.solution2.savings ? (calculations.solution2.savings[4] || 0) : 0;
+            
+            // Calcul des ROI et payback
+            const investment1 = getInvestment('solution1');
+            const investment2 = hasRealSolution2Data ? getInvestment('solution2') : 0;
+            const roi1 = investment1 > 0 ? ((savings1 / investment1) * 100) : 0;
+            const roi2 = investment2 > 0 ? ((savings2 / investment2) * 100) : 0;
+            const payback1 = calculatePayback('solution1');
+            const payback2 = hasRealSolution2Data ? calculatePayback('solution2') : '';
+
+            const container = document.createElement('div');
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            container.style.gap = '15px';
+            
+            const kpis = [
+                {
+                    title: '💰 ROI Solution 1',
+                    value: roi1.toFixed(1) + '%',
+                    subtitle: 'Retour sur investissement',
+                    show: true,
+                    positive: roi1 > 0
+                },
+                {
+                    title: '💰 ROI Solution 2',
+                    value: roi2.toFixed(1) + '%',
+                    subtitle: 'Retour sur investissement',
+                    show: hasRealSolution2Data,
+                    positive: roi2 > 0
+                },
+                {
+                    title: '⏱️ Payback Solution 1',
+                    value: payback1,
+                    subtitle: 'Temps d\'amortissement',
+                    show: true,
+                    positive: payback1 !== '> 5 ans' && payback1 !== '- an'
+                },
+                {
+                    title: '⏱️ Payback Solution 2',
+                    value: payback2,
+                    subtitle: 'Temps d\'amortissement',
+                    show: hasRealSolution2Data,
+                    positive: payback2 !== '> 5 ans' && payback2 !== '- an'
+                },
+                {
+                    title: '💵 Économies Sol. 1',
+                    value: formatEuro(savings1),
+                    subtitle: 'Sur 5 ans',
+                    show: true,
+                    positive: savings1 > 0
+                },
+                {
+                    title: '💵 Économies Sol. 2',
+                    value: formatEuro(savings2),
+                    subtitle: 'Sur 5 ans',
+                    show: hasRealSolution2Data,
+                    positive: savings2 > 0
+                }
+            ];
+
+            kpis.forEach(kpi => {
+                if (!kpi.show) return;
+                
+                const card = document.createElement('div');
+                card.style.background = 'white';
+                card.style.borderRadius = '18px';
+                card.style.padding = '20px';
+                card.style.textAlign = 'center';
+                card.style.boxShadow = '0 15px 35px rgba(27, 54, 93, 0.08)';
+                card.style.borderTop = '4px solid #1B365D';
+                
+                const title = document.createElement('div');
+                title.style.fontSize = '0.9rem';
+                title.style.color = '#1B365D';
+                title.style.marginBottom = '15px';
+                title.style.textTransform = 'uppercase';
+                title.style.letterSpacing = '1px';
+                title.style.fontWeight = '600';
+                title.textContent = kpi.title;
+                
+                const value = document.createElement('div');
+                value.style.fontSize = '1.8rem';
+                value.style.fontWeight = '800';
+                value.style.color = kpi.positive ? '#27ae60' : '#D12C47';
+                value.style.marginBottom = '10px';
+                value.textContent = kpi.value;
+                
+                const subtitle = document.createElement('div');
+                subtitle.style.fontSize = '0.8rem';
+                subtitle.style.color = '#666';
+                subtitle.style.fontWeight = '500';
+                subtitle.textContent = kpi.subtitle;
+                
+                card.appendChild(title);
+                card.appendChild(value);
+                card.appendChild(subtitle);
+                container.appendChild(card);
+            });
+            
+            return container;
+        }
+
+        // Nouvelle fonction pour créer le tableau d'export avec les bonnes données
+        function createExportTable(isCompact = false) {
+            const hasRealSolution2Data = hasSolution2Data();
+            
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'table-container';
+            tableContainer.style.marginBottom = isCompact ? '20px' : '30px';
+            
+            const table = document.createElement('table');
+            table.className = 'equipment-table';
+            if (isCompact) {
+                table.style.fontSize = '0.85rem';
+            }
+            
+            // En-tête du tableau
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            
+            const headers = [
+                'Année',
+                '🔧 Équipement Existant',
+                '🚀 Solution 1',
+                '💡 Solution 2',
+                '💰 Économies Sol. 1',
+                '💰 Économies Sol. 2'
+            ];
+            
+            headers.forEach((headerText, index) => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                if (isCompact) {
+                    th.style.padding = '8px 6px';
+                }
+                
+                // Masquer les colonnes Solution 2 si pas de données
+                if (!hasRealSolution2Data && (index === 3 || index === 5)) {
+                    th.style.display = 'none';
+                }
+                
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // Corps du tableau avec les vraies données
+            const tbody = document.createElement('tbody');
+            
+            for (let i = 0; i < 5; i++) {
+                const year = i + 1;
+                const row = document.createElement('tr');
+                
+                // Récupérer les données actuelles des calculs
+                const existingCumul = calculations.existing.cumulative ? (calculations.existing.cumulative[i] || 0) : 0;
+                const solution1Cumul = calculations.solution1.cumulative ? (calculations.solution1.cumulative[i] || 0) : 0;
+                const solution2Cumul = calculations.solution2.cumulative ? (calculations.solution2.cumulative[i] || 0) : 0;
+                const savings1 = calculations.solution1.savings ? (calculations.solution1.savings[i] || 0) : 0;
+                const savings2 = calculations.solution2.savings ? (calculations.solution2.savings[i] || 0) : 0;
+                
+                const savings1Class = savings1 > 0 ? 'profit' : 'loss';
+                const savings2Class = savings2 > 0 ? 'profit' : 'loss';
+                
+                const cellData = [
+                    `Année ${year}`,
+                    formatEuro(existingCumul),
+                    formatEuro(solution1Cumul),
+                    formatEuro(solution2Cumul),
+                    formatEuro(savings1),
+                    formatEuro(savings2)
+                ];
+                
+                cellData.forEach((cellText, index) => {
+                    const td = document.createElement('td');
+                    
+                    if (index === 0) {
+                        td.innerHTML = `<strong>${cellText}</strong>`;
+                    } else {
+                        td.textContent = cellText;
+                    }
+                    
+                    if (isCompact) {
+                        td.style.padding = '8px 6px';
+                    }
+                    
+                    // Appliquer les classes de style pour les économies
+                    if (index === 4) {
+                        td.className = savings1Class;
+                    } else if (index === 5) {
+                        td.className = savings2Class;
+                    }
+                    
+                    // Masquer les colonnes Solution 2 si pas de données
+                    if (!hasRealSolution2Data && (index === 3 || index === 5)) {
+                        td.style.display = 'none';
+                    }
+                    
+                    row.appendChild(td);
+                });
+                
+                tbody.appendChild(row);
+            }
+            
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+            
+            return tableContainer;
+        }
+
+        function createExportChart(chartId, title, orientation, isSmall = false) {
+            const originalCanvas = document.getElementById(chartId);
+            if (!originalCanvas) return null;
+
+            const container = document.createElement('div');
+            container.className = 'export-chart-container';
+            
+            if (isSmall) {
+                container.style.height = orientation === 'horizontal' ? '250px' : '300px';
+                container.style.minHeight = 'auto';
+            } else {
+                container.style.height = orientation === 'horizontal' ? '400px' : '450px';
+            }
+
+            if (title) {
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'export-chart-title';
+                titleDiv.textContent = title;
+                titleDiv.style.fontSize = isSmall ? '1.1rem' : '1.3rem';
+                container.appendChild(titleDiv);
+            }
+
+            const canvasContainer = document.createElement('div');
+            canvasContainer.style.position = 'relative';
+            canvasContainer.style.height = title ? 'calc(100% - 50px)' : '100%';
+            canvasContainer.style.width = '100%';
+
+            try {
+                const img = document.createElement('img');
+                img.src = originalCanvas.toDataURL('image/png', 0.9);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                canvasContainer.appendChild(img);
+            } catch (e) {
+                console.warn(`Impossible de capturer le canvas ${chartId}:`, e);
+                const placeholder = document.createElement('div');
+                placeholder.style.width = '100%';
+                placeholder.style.height = '100%';
+                placeholder.style.background = '#f5f5f5';
+                placeholder.style.display = 'flex';
+                placeholder.style.alignItems = 'center';
+                placeholder.style.justifyContent = 'center';
+                placeholder.style.color = '#666';
+                placeholder.style.fontSize = '1rem';
+                placeholder.style.fontWeight = '600';
+                placeholder.textContent = 'Graphique en cours de génération...';
+                canvasContainer.appendChild(placeholder);
+            }
+
+            container.appendChild(canvasContainer);
+            return container;
+        }
+
+        function captureCompleteReport(container, exportWidth, canvasData, orientation) {
             const options = {
                 backgroundColor: '#ffffff',
                 width: exportWidth,
                 height: container.scrollHeight,
-                scale: 1.5,
+                scale: orientation === 'horizontal' ? 1.2 : 1.5,
+                useCORS: true,
+                allowTaint: false,
+                foreignObjectRendering: false,
+                logging: false,
+                removeContainer: false,
+                onclone: (clonedDoc) => {
+                    try {
+                        // Assurer que tous les styles sont appliqués dans le clone
+                        const clonedContainer = clonedDoc.querySelector('.export-container');
+                        if (clonedContainer) {
+                            clonedContainer.style.position = 'static';
+                            clonedContainer.style.top = 'auto';
+                            clonedContainer.style.left = 'auto';
+                            clonedContainer.style.zIndex = 'auto';
+                            clonedContainer.style.transform = 'none';
+                        }
+                        
+                        // Améliorer la qualité des images dans le clone
+                        const images = clonedDoc.querySelectorAll('img');
+                        images.forEach(img => {
+                            if (img && img.style) {
+                                img.style.imageRendering = 'crisp-edges';
+                                img.style.imageRendering = '-webkit-optimize-contrast';
+                            }
+                        });
+                        
+                        // Nettoyer les éléments potentiellement problématiques
+                        const scripts = clonedDoc.querySelectorAll('script');
+                        scripts.forEach(script => {
+                            if (script.parentNode) {
+                                script.parentNode.removeChild(script);
+                            }
+                        });
+                    } catch (e) {
+                        console.warn('Erreur lors du clonage:', e);
+                    }
+                }
+            };
+
+            html2canvas(container, options).then(canvas => {
+                handleSuccessfulCapture(canvas, container, orientation);
+            }).catch(error => {
+                console.error('Erreur html2canvas:', error);
+                handleExportError(container);
+            });
+        }
+
+        function handleSuccessfulCapture(canvas, container, orientation) {
+            // Nettoyer le conteneur temporaire
+            if (document.body.contains(container)) {
+                try {
+                    document.body.removeChild(container);
+                } catch (e) {
+                    console.warn('Erreur lors du nettoyage du conteneur:', e);
+                }
+            }
+            
+            // Supprimer l'overlay de chargement
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay && document.body.contains(loadingOverlay)) {
+                try {
+                    document.body.removeChild(loadingOverlay);
+                } catch (e) {
+                    console.warn('Erreur lors du nettoyage de l\'overlay:', e);
+                }
+            }
+
+            // Copier l'image dans le presse-papier ou télécharger
+            canvas.toBlob(blob => {
+                if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        navigator.clipboard.write([item]).then(() => {
+                            const format = orientation === 'horizontal' ? 'PowerPoint' : 'Word';
+                            showSuccessMessage(`📸 Rapport complet ${format} copié dans le presse-papier ! Prêt à coller dans vos documents.`);
+                        }).catch(() => {
+                            downloadImage(canvas, orientation);
+                        });
+                    } catch (e) {
+                        downloadImage(canvas, orientation);
+                    }
+                } else {
+                    downloadImage(canvas, orientation);
+                }
+            }, 'image/png', 0.95);
+        }.3rem';
+                container.appendChild(titleDiv);
+            }
+
+            const canvasContainer = document.createElement('div');
+            canvasContainer.style.position = 'relative';
+            canvasContainer.style.height = title ? 'calc(100% - 50px)' : '100%';
+            canvasContainer.style.width = '100%';
+
+            const img = document.createElement('img');
+            try {
+                img.src = originalCanvas.toDataURL('image/png', 0.9);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                canvasContainer.appendChild(img);
+            } catch (e) {
+                const placeholder = document.createElement('div');
+                placeholder.style.width = '100%';
+                placeholder.style.height = '100%';
+                placeholder.style.background = '#f5f5f5';
+                placeholder.style.display = 'flex';
+                placeholder.style.alignItems = 'center';
+                placeholder.style.justifyContent = 'center';
+                placeholder.style.color = '#666';
+                placeholder.textContent = 'Graphique non disponible';
+                canvasContainer.appendChild(placeholder);
+            }
+
+            container.appendChild(canvasContainer);
+            return container;
+        }
+
+        function captureCompleteReport(container, exportWidth, canvasData, orientation) {
+            const options = {
+                backgroundColor: '#ffffff',
+                width: exportWidth,
+                height: container.scrollHeight,
+                scale: orientation === 'horizontal' ? 1.2 : 1.5,
                 useCORS: true,
                 allowTaint: false,
                 foreignObjectRendering: false,
@@ -2308,27 +2877,24 @@
                         clonedContainer.style.transform = 'none';
                     }
                     
-                    // Remplacer les canvases par des images pour la capture
-                    const canvases = clonedDoc.querySelectorAll('canvas');
-                    canvases.forEach((canvas, idx) => {
-                        const img = clonedDoc.createElement('img');
-                        img.src = canvasData[idx];
-                        img.style.width = canvas.style.width || canvas.width + 'px';
-                        img.style.height = canvas.style.height || canvas.height + 'px';
-                        canvas.parentNode.replaceChild(img, canvas);
+                    // Améliorer la qualité des images dans le clone
+                    const images = clonedDoc.querySelectorAll('img');
+                    images.forEach(img => {
+                        img.style.imageRendering = 'crisp-edges';
+                        img.style.imageRendering = '-webkit-optimize-contrast';
                     });
                 }
             };
 
             html2canvas(container, options).then(canvas => {
-                handleSuccessfulCapture(canvas, container);
+                handleSuccessfulCapture(canvas, container, orientation);
             }).catch(error => {
                 console.error('Erreur html2canvas:', error);
                 handleExportError(container);
             });
         }
 
-        function handleSuccessfulCapture(canvas, container) {
+        function handleSuccessfulCapture(canvas, container, orientation) {
             // Nettoyer le conteneur temporaire
             if (document.body.contains(container)) {
                 document.body.removeChild(container);
@@ -2346,15 +2912,16 @@
                     try {
                         const item = new ClipboardItem({ 'image/png': blob });
                         navigator.clipboard.write([item]).then(() => {
-                            showSuccessMessage('📸 Rapport image copié dans le presse-papier ! Prêt à coller dans vos documents.');
+                            const format = orientation === 'horizontal' ? 'PowerPoint' : 'Word';
+                            showSuccessMessage(`📸 Rapport complet ${format} copié dans le presse-papier ! Prêt à coller dans vos documents.`);
                         }).catch(() => {
-                            downloadImage(canvas);
+                            downloadImage(canvas, orientation);
                         });
                     } catch (e) {
-                        downloadImage(canvas);
+                        downloadImage(canvas, orientation);
                     }
                 } else {
-                    downloadImage(canvas);
+                    downloadImage(canvas, orientation);
                 }
             }, 'image/png', 0.95);
         }
@@ -2362,23 +2929,32 @@
         function handleExportError(container = null) {
             // Nettoyer si nécessaire
             if (container && document.body.contains(container)) {
-                document.body.removeChild(container);
+                try {
+                    document.body.removeChild(container);
+                } catch (e) {
+                    console.warn('Erreur lors du nettoyage du conteneur:', e);
+                }
             }
             
             // Supprimer l'overlay de chargement
             const loadingOverlay = document.querySelector('.loading-overlay');
             if (loadingOverlay && document.body.contains(loadingOverlay)) {
-                document.body.removeChild(loadingOverlay);
+                try {
+                    document.body.removeChild(loadingOverlay);
+                } catch (e) {
+                    console.warn('Erreur lors du nettoyage de l\'overlay:', e);
+                }
             }
             
-            showSuccessMessage('⚠️ Génération d\'image non disponible sur ce navigateur. Veuillez réessayer ou contacter le support.');
+            showSuccessMessage('⚠️ Génération d\'image non disponible sur ce navigateur. Données sauvegardées dans le calculateur.');
         }
 
-        function downloadImage(canvas) {
+        function downloadImage(canvas, orientation) {
             try {
                 // Créer un lien de téléchargement
+                const format = orientation === 'horizontal' ? 'PPT' : 'Word';
                 const link = document.createElement('a');
-                link.download = `rapport-roi-Worthington Creyssensac-${new Date().toISOString().split('T')[0]}.png`;
+                link.download = `rapport-roi-worthington-creyssensac-${format}-${new Date().toISOString().split('T')[0]}.png`;
                 link.href = canvas.toDataURL('image/png', 0.95);
                 
                 // Déclencher le téléchargement
@@ -2386,14 +2962,22 @@
                 link.click();
                 document.body.removeChild(link);
                 
-                showSuccessMessage('📁 Rapport image téléchargé ! Fichier sauvegardé dans vos téléchargements.');
+                showSuccessMessage(`📁 Rapport complet ${format} téléchargé ! Fichier sauvegardé dans vos téléchargements.`);
             } catch (error) {
                 console.error('Erreur téléchargement:', error);
-                showSuccessMessage('⚠️ Impossible de télécharger l\'image. Veuillez réessayer ou contacter le support.');
+                showSuccessMessage('⚠️ Impossible de télécharger l\'image. Veuillez réessayer.');
             }
         }
 
         function showSuccessMessage(message) {
+            // Supprimer les anciens messages
+            const existingMessages = document.querySelectorAll('.success-message');
+            existingMessages.forEach(msg => {
+                if (document.body.contains(msg)) {
+                    document.body.removeChild(msg);
+                }
+            });
+            
             const successDiv = document.createElement('div');
             successDiv.className = 'success-message';
             successDiv.textContent = message;
@@ -2402,9 +2986,13 @@
             
             setTimeout(() => {
                 if (document.body.contains(successDiv)) {
-                    document.body.removeChild(successDiv);
+                    try {
+                        document.body.removeChild(successDiv);
+                    } catch (e) {
+                        console.warn('Erreur lors de la suppression du message:', e);
+                    }
                 }
-            }, 3000);
+            }, 4000);
         }
 
         // Gestion des événements
@@ -2418,22 +3006,38 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            updateUI();
-            calculateStep(1);
-            
-            // Ajouter un compresseur par défaut pour commencer
-            setTimeout(() => {
-                addCompressor('existing');
-            }, 500);
-            
-            showSuccessMessage('Calculateur ROI Worthington Creyssensac chargé avec succès ! 🎯');
+            try {
+                updateUI();
+                calculateStep(1);
+                
+                // Ajouter un compresseur par défaut pour commencer
+                setTimeout(() => {
+                    addCompressor('existing');
+                }, 500);
+                
+                showSuccessMessage('Calculateur ROI Worthington Creyssensac chargé avec succès ! 🎯');
 
-            const toggleBtn = document.getElementById('themeToggle');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                });
+                const toggleBtn = document.getElementById('themeToggle');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        document.body.classList.toggle('dark-mode');
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation:', error);
+                showSuccessMessage('⚠️ Erreur lors du chargement. Veuillez actualiser la page.');
             }
+        });
+
+        // Gestion globale des erreurs
+        window.addEventListener('error', function(e) {
+            console.error('Erreur JavaScript:', e.error);
+            // Ne pas afficher de message pour chaque erreur, juste logger
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promise rejetée:', e.reason);
+            // Ne pas afficher de message pour chaque erreur, juste logger
         });
     </script>
 </body>
