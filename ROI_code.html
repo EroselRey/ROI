@@ -2235,6 +2235,18 @@
                 reportContainer.appendChild(resultsClone);
             }
 
+            // Graphiques
+            const chartIds = ['existingChart','solution1Chart','solution2Chart','finalChart'];
+            const canvasData = [];
+            chartIds.forEach(id => {
+                const canvas = document.getElementById(id);
+                if (canvas) {
+                    const containerClone = canvas.parentElement.cloneNode(true);
+                    containerClone.style.marginBottom = '30px';
+                    reportContainer.appendChild(containerClone);
+                    canvasData.push(canvas.toDataURL('image/png'));
+                }
+            });
 
             // Tableau détaillé
             const tableSection = document.querySelector('#step-4 .equipment-section');
@@ -2270,13 +2282,11 @@
 
             // Attendre un peu que le contenu soit rendu puis capturer
             setTimeout(() => {
-                captureReportImage(reportContainer, exportWidth);
+                captureReportImage(reportContainer, exportWidth, canvasData);
             }, 300);
         }
 
-
-        function captureReportImage(container, exportWidth) {
-            const canvasData = Array.from(container.querySelectorAll('canvas')).map(c => c.toDataURL('image/png'));
+        function captureReportImage(container, exportWidth, canvasData = []) {
             const options = {
                 backgroundColor: '#ffffff',
                 width: exportWidth,
