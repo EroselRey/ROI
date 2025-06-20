@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur ROI - Équipement Industriel</title>
+    <title>Calculateur ROI - Worthington Creyssensac Creyssensac</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
@@ -16,9 +17,10 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #0F2A44 0%, #1B365D 50%, #2C4F7C 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #fff;
         }
 
         .container {
@@ -27,16 +29,26 @@
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.25);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 50%, #3A6B9D 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
             position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #D12C47, #E74C3C, #D12C47);
         }
 
         .theme-toggle {
@@ -47,12 +59,14 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: white;
         }
 
         .header h1 {
             font-size: 3rem;
             margin-bottom: 15px;
             font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
@@ -65,7 +79,7 @@
             justify-content: center;
             align-items: center;
             padding: 30px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
         }
 
         .step {
@@ -83,8 +97,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: #dee2e6;
-            color: #6c757d;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -94,9 +108,9 @@
         }
 
         .step.active .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D12C47 0%, #E74C3C 100%);
             color: white;
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 0 20px rgba(209, 44, 71, 0.5);
             transform: scale(1.1);
         }
 
@@ -112,23 +126,24 @@
         .step-label {
             margin-left: 15px;
             font-weight: 600;
-            color: #6c757d;
+            color: #fff;
             transition: all 0.3s ease;
         }
 
         .step.active .step-label {
-            color: #667eea;
+            color: #D12C47;
             font-weight: 700;
+            text-shadow: 0 0 10px rgba(209, 44, 71, 0.3);
         }
 
         .step.completed .step-label {
-            color: #27ae60;
+            color: #2ecc71;
         }
 
         .step-connector {
             width: 80px;
             height: 3px;
-            background: #dee2e6;
+            background: rgba(255, 255, 255, 0.3);
             margin: 0 20px;
             transition: all 0.3s ease;
         }
@@ -139,6 +154,8 @@
 
         .main-content {
             padding: 40px;
+            background: #f8f9fa;
+            color: #2c3e50;
         }
 
         .step-content {
@@ -169,9 +186,9 @@
         .step-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #2c3e50;
+            color: #1B365D;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #1B365D, #D12C47);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -194,7 +211,7 @@
             background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 40px rgba(27, 54, 93, 0.08);
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
@@ -203,7 +220,7 @@
 
         .equipment-section:hover {
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 30px 60px rgba(27, 54, 93, 0.12);
         }
 
         .equipment-section::before {
@@ -213,7 +230,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            background: linear-gradient(90deg, #1B365D, #D12C47, #2C4F7C);
         }
 
         .section-header {
@@ -222,13 +239,13 @@
             align-items: center;
             margin-bottom: 25px;
             padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
             border-radius: 12px;
-            border-left: 4px solid #667eea;
+            color: white;
         }
 
         .section-title {
-            color: #2c3e50;
+            color: white;
             font-size: 1.5rem;
             font-weight: 700;
             display: flex;
@@ -242,7 +259,7 @@
         }
 
         .btn-control {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #D12C47, #E74C3C);
             color: white;
             border: none;
             padding: 10px 18px;
@@ -251,12 +268,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(209, 44, 71, 0.3);
         }
 
         .btn-control:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(209, 44, 71, 0.4);
         }
 
         .add-equipment-section {
@@ -264,14 +281,14 @@
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 25px;
-            border: 2px dashed #667eea;
+            border: 2px dashed #1B365D;
             text-align: center;
         }
 
         .add-equipment-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #667eea;
+            color: #1B365D;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -287,7 +304,7 @@
         }
 
         .add-btn {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: linear-gradient(135deg, #1B365D, #2C4F7C);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -296,7 +313,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 4px 15px rgba(27, 54, 93, 0.3);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -304,7 +321,16 @@
 
         .add-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 8px 25px rgba(27, 54, 93, 0.4);
+        }
+
+        .add-btn.special {
+            background: linear-gradient(135deg, #D12C47, #E74C3C);
+            box-shadow: 0 4px 15px rgba(209, 44, 71, 0.3);
+        }
+
+        .add-btn.special:hover {
+            box-shadow: 0 8px 25px rgba(209, 44, 71, 0.4);
         }
 
         .table-container {
@@ -312,7 +338,7 @@
             border-radius: 15px;
             padding: 25px;
             margin: 25px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 35px rgba(27, 54, 93, 0.08);
             border: 1px solid #f1f3f4;
         }
 
@@ -330,7 +356,7 @@
         }
 
         .equipment-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
             color: white;
             padding: 18px 12px;
             text-align: center;
@@ -362,7 +388,7 @@
 
         .equipment-table td:first-child {
             font-weight: 600;
-            color: #2c3e50;
+            color: #1B365D;
             background: #fafafa;
             border-right: 2px solid #e9ecef;
             text-align: left;
@@ -387,8 +413,8 @@
 
         .equipment-table input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+            border-color: #1B365D;
+            box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.15);
             transform: scale(1.02);
         }
 
@@ -398,7 +424,7 @@
         }
 
         .remove-btn {
-            background: #e74c3c;
+            background: #D12C47;
             color: white;
             border: none;
             padding: 4px 8px;
@@ -410,17 +436,17 @@
         }
 
         .remove-btn:hover {
-            background: #c0392b;
+            background: #B91C3A;
             transform: scale(1.1);
         }
 
         .equipment-group {
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #1B365D;
             background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%) !important;
         }
 
         .equipment-group td:first-child {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%) !important;
             color: white !important;
             font-weight: 700;
             text-transform: uppercase;
@@ -432,19 +458,19 @@
         }
 
         .summary-section {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
             color: white;
             border-radius: 20px;
             padding: 35px;
             text-align: center;
             margin: 30px 0;
-            box-shadow: 0 20px 40px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 20px 40px rgba(27, 54, 93, 0.3);
             transition: all 0.3s ease;
         }
 
         .summary-section:hover {
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 30px 60px rgba(27, 54, 93, 0.4);
         }
 
         .summary-section h4 {
@@ -503,11 +529,11 @@
         }
 
         .comparison-card.existing::before {
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            background: linear-gradient(90deg, #D12C47, #E74C3C);
         }
 
         .comparison-card.solution1::before {
-            background: linear-gradient(90deg, #3498db, #2980b9);
+            background: linear-gradient(90deg, #1B365D, #2C4F7C);
         }
 
         .comparison-card.solution2::before {
@@ -527,8 +553,8 @@
             margin-bottom: 15px;
         }
 
-        .comparison-value.existing { color: #e74c3c; }
-        .comparison-value.solution1 { color: #3498db; }
+        .comparison-value.existing { color: #D12C47; }
+        .comparison-value.solution1 { color: #1B365D; }
         .comparison-value.solution2 { color: #27ae60; }
 
         .comparison-details {
@@ -543,13 +569,13 @@
             border-radius: 20px;
             padding: 25px;
             margin: 30px 0;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 40px rgba(27, 54, 93, 0.08);
             transition: all 0.3s ease;
         }
 
         .chart-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 30px 60px rgba(27, 54, 93, 0.12);
         }
 
         .navigation-buttons {
@@ -578,8 +604,8 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
+            box-shadow: 0 15px 35px rgba(27, 54, 93, 0.3);
         }
 
         .btn-secondary {
@@ -615,18 +641,19 @@
             border-radius: 18px;
             padding: 30px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 35px rgba(27, 54, 93, 0.08);
             transition: all 0.3s ease;
+            border-top: 4px solid #1B365D;
         }
 
         .result-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 25px 50px rgba(27, 54, 93, 0.12);
         }
 
         .result-title {
             font-size: 1.1rem;
-            color: #666;
+            color: #1B365D;
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -636,12 +663,12 @@
         .result-value {
             font-size: 2.2rem;
             font-weight: 800;
-            color: #2c3e50;
+            color: #1B365D;
             margin-bottom: 10px;
         }
 
         .result-value.positive { color: #27ae60; }
-        .result-value.negative { color: #e74c3c; }
+        .result-value.negative { color: #D12C47; }
 
         .result-subtitle {
             font-size: 0.9rem;
@@ -650,7 +677,7 @@
         }
 
         .recommendation-banner {
-            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            background: linear-gradient(135deg, #D12C47 0%, #E74C3C 100%);
             color: white;
             padding: 35px;
             border-radius: 20px;
@@ -658,7 +685,7 @@
             margin: 30px 0;
             font-weight: 700;
             font-size: 1.4rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(209, 44, 71, 0.3);
             animation: pulse 2s infinite;
         }
 
@@ -685,7 +712,7 @@
         }
         
         .loss { 
-            color: #e74c3c; 
+            color: #D12C47; 
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -705,14 +732,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: linear-gradient(135deg, #1B365D, #2C4F7C);
             color: white;
             padding: 25px 50px;
             border-radius: 15px;
             font-weight: 700;
             font-size: 1.1rem;
             z-index: 10000;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(27, 54, 93, 0.5);
             animation: successPulse 3s ease-in-out;
         }
 
@@ -722,6 +749,67 @@
             25% { transform: translate(-50%, -50%) scale(1); }
             85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+
+        /* Styles pour l'export d'image */
+        .export-container {
+            background: white;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .report-header-export {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .report-header-export h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .report-header-export p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(27, 54, 93, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -739,39 +827,32 @@
 
         /* Dark mode styles */
         body.dark-mode {
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 50%, #444 100%);
-            color: #f5f5f5;
+            background: linear-gradient(135deg, #0A1A2A 0%, #0F2A44 50%, #1B365D 100%);
         }
         body.dark-mode .container {
-            background: rgba(30, 30, 30, 0.98);
+            background: rgba(15, 25, 35, 0.98);
         }
-        body.dark-mode .header {
-            background: linear-gradient(135deg, #3f51b5 0%, #1a237e 50%, #0d47a1 100%);
+        body.dark-mode .main-content {
+            background: #1a1a1a;
+            color: #f5f5f5;
         }
-        body.dark-mode .progress-bar {
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-        }
-        body.dark-mode .step-label { color: #ddd; }
-        body.dark-mode .step.active .step-number {
-            background: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
-            color: #fff;
-        }
-        body.dark-mode .step.completed .step-number {
-            background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
-        }
-        body.dark-mode .equipment-table th {
-            background: linear-gradient(135deg, #3f51b5 0%, #1a237e 100%);
+        body.dark-mode .equipment-section {
+            background: #2a2a2a;
         }
         body.dark-mode .table-container {
             background: #222;
             border: 1px solid #444;
         }
         body.dark-mode .equipment-table td { border-color: #444; }
-        body.dark-mode .add-btn {
-            background: linear-gradient(135deg, #388e3c, #43a047);
+        body.dark-mode .comparison-card {
+            background: #2a2a2a;
         }
-        body.dark-mode .btn-control {
-            background: linear-gradient(135deg, #3f51b5, #1a237e);
+        body.dark-mode .result-card {
+            background: #2a2a2a;
+            border-top-color: #D12C47;
+        }
+        body.dark-mode .chart-container {
+            background: #2a2a2a;
         }
     </style>
 </head>
@@ -779,8 +860,8 @@
     <div class="container">
         <div class="header">
             <button id="themeToggle" class="theme-toggle" aria-label="Basculer le thème">🌙</button>
-            <h1>🎯 Calculateur ROI Pro</h1>
-            <p>Analyse comparative des solutions d'équipement industriel</p>
+            <h1>🎯 Calculateur ROI Worthington Creyssensac</h1>
+            <p>Analyse comparative des solutions d'air comprimé industriel</p>
         </div>
 
         <div class="progress-bar">
@@ -889,7 +970,7 @@
                 <div class="form-container">
                     <div class="equipment-section">
                         <div class="section-header">
-                            <div class="section-title">🚀 Configuration Premium</div>
+                            <div class="section-title">🚀 Configuration Premium Worthington Creyssensac</div>
                             <div class="section-controls">
                                 <button class="btn-control" onclick="clearTable('solution1')">Effacer Tout</button>
                             </div>
@@ -897,12 +978,18 @@
 
                         <div class="add-equipment-section">
                             <div class="add-equipment-title">➕ Ajouter des Équipements</div>
-                            <div class="add-equipment-controls">
+                            <div class="add-equipment-controls" id="solution1-controls">
                                 <button class="add-btn" onclick="addCompressor('solution1')">
                                     🔧 Ajouter Compresseur
                                 </button>
                                 <button class="add-btn" onclick="addDryer('solution1')">
                                     💨 Ajouter Sécheur
+                                </button>
+                                <button class="add-btn special" onclick="addPrimeCEE('solution1')">
+                                    💰 Ajouter Prime CEE
+                                </button>
+                                <button class="add-btn special" onclick="addReprise('solution1')">
+                                    ♻️ Ajouter Reprise
                                 </button>
                             </div>
                         </div>
@@ -935,14 +1022,14 @@
                             <div class="comparison-details">Coût total sur 5 ans</div>
                         </div>
                         <div class="comparison-card solution1">
-                            <div class="comparison-title">🚀 Solution 1</div>
+                            <div class="comparison-title">🚀 Solution Worthington Creyssensac</div>
                             <div class="comparison-value solution1" id="solution1-comparison">0 €</div>
                             <div class="comparison-details">Coût total sur 5 ans</div>
                         </div>
                     </div>
 
                     <div class="summary-section" id="solution1-summary">
-                        <h4>💡 Économies Potentielles avec Solution 1</h4>
+                        <h4>💡 Économies Potentielles avec Solution Worthington Creyssensac</h4>
                         <div class="summary-value" id="solution1-savings">0 €</div>
                         <div class="summary-details" id="solution1-details">Configurez vos équipements</div>
                     </div>
@@ -984,12 +1071,18 @@
 
                         <div class="add-equipment-section">
                             <div class="add-equipment-title">➕ Ajouter des Équipements</div>
-                            <div class="add-equipment-controls">
+                            <div class="add-equipment-controls" id="solution2-controls">
                                 <button class="add-btn" onclick="addCompressor('solution2')">
                                     🔧 Ajouter Compresseur
                                 </button>
                                 <button class="add-btn" onclick="addDryer('solution2')">
                                     💨 Ajouter Sécheur
+                                </button>
+                                <button class="add-btn special" onclick="addPrimeCEE('solution2')">
+                                    💰 Ajouter Prime CEE
+                                </button>
+                                <button class="add-btn special" onclick="addReprise('solution2')">
+                                    ♻️ Ajouter Reprise
                                 </button>
                             </div>
                         </div>
@@ -1067,7 +1160,7 @@
 
                 <div class="form-container">
                     <div class="recommendation-banner" id="final-recommendation">
-                        🎯 Configurez vos équipements pour voir les recommandations
+                        🎯 Configurez vos équipements pour voir les recommandations Worthington Creyssensac
                     </div>
 
                     <div class="results-grid">
@@ -1134,9 +1227,9 @@
                     </div>
 
                     <div class="export-buttons">
-                        <button class="btn btn-success" onclick="exportText()">
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                            Copier le Rapport
+                        <button class="btn btn-primary" onclick="exportImage()">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                            📸 Générer le Rapport Worthington Creyssensac
                         </button>
                     </div>
                 </div>
@@ -1233,14 +1326,21 @@
                     content.classList.add('active');
                 }
             });
-
-            // S'assurer que les boutons Prime CEE et Reprise sont disponibles
-            updateSpecialButtons();
         }
 
         function hasSolution2Data() {
             const tbody = document.getElementById('solution2-tbody');
-            return tbody && tbody.children.length > 0;
+            if (!tbody || tbody.children.length === 0) return false;
+            
+            // Vérifier s'il y a vraiment des valeurs non-nulles dans les inputs
+            const inputs = tbody.querySelectorAll('input');
+            for (let input of inputs) {
+                const value = parseFloat(input.value) || 0;
+                if (value !== 0) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Fonctions d'ajout d'équipements
@@ -1306,6 +1406,61 @@
             showSuccessMessage(`Sécheur ${dryerNum} ajouté !`);
         }
 
+        // Ajout spécial pour les primes CEE
+        function addPrimeCEE(tableType) {
+            if (tableType === 'existing') return; // Pas de prime pour l'existant
+
+            // Incrémenter le compteur et déterminer le numéro de la prime
+            equipmentCounters[tableType].prime++;
+            const primeNum = equipmentCounters[tableType].prime;
+
+            const tbody = document.getElementById(`${tableType}-tbody`);
+            const row = createEquipmentRow(`Prime CEE ${primeNum}`, 'prime', primeNum, tableType, 'prime');
+            
+            // Modifier les inputs pour la prime (négative et seulement année 1)
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                if (index === 0) {
+                    input.value = '-3000'; // Valeur par défaut négative
+                } else {
+                    const cell = input.parentElement;
+                    cell.innerHTML = '-'; // Utiliser innerHTML au lieu de removeChild
+                    cell.className = 'readonly-cell';
+                }
+            });
+
+            tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Prime CEE ajoutée !');
+        }
+
+        function addReprise(tableType) {
+            if (tableType === 'existing') return; // Pas de reprise pour l'existant
+
+            // Incrémenter le compteur et déterminer le numéro de la reprise
+            equipmentCounters[tableType].reprise++;
+            const repriseNum = equipmentCounters[tableType].reprise;
+
+            const tbody = document.getElementById(`${tableType}-tbody`);
+            const row = createEquipmentRow(`Reprise équipement ${repriseNum}`, 'reprise', repriseNum, tableType, 'reprise');
+            
+            // Modifier les inputs pour la reprise (négative et seulement année 1)
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                if (index === 0) {
+                    input.value = '-5000'; // Valeur par défaut négative
+                } else {
+                    const cell = input.parentElement;
+                    cell.innerHTML = '-'; // Utiliser innerHTML au lieu de removeChild
+                    cell.className = 'readonly-cell';
+                }
+            });
+
+            tbody.appendChild(row);
+            calculateStep(currentStep);
+            showSuccessMessage('Reprise ajoutée !');
+        }
+
         function createEquipmentRow(label, type, equipmentNum, tableType, equipmentType = 'compressor') {
             const row = document.createElement('tr');
             
@@ -1355,12 +1510,15 @@
         function removeEquipmentRow(button, tableType, equipmentType, equipmentNum) {
             // Supprimer toutes les lignes de cet équipement
             const tbody = document.getElementById(`${tableType}-tbody`);
-            const rows = tbody.querySelectorAll(`tr`);
+            const rows = Array.from(tbody.querySelectorAll('tr'));
             
             rows.forEach(row => {
                 const inputs = row.querySelectorAll(`input[data-equipment-type="${equipmentType}"][data-equipment-num="${equipmentNum}"]`);
                 if (inputs.length > 0) {
-                    row.remove();
+                    // Vérifier que la ligne est bien dans le tbody avant de la supprimer
+                    if (row.parentNode === tbody) {
+                        tbody.removeChild(row);
+                    }
                 }
             });
             
@@ -1384,63 +1542,6 @@
             equipmentCounters[tableType] = { compressors: 0, dryers: 0, prime: 0, reprise: 0 };
             calculateStep(currentStep);
             showSuccessMessage(`Tableau ${tableType} effacé !`);
-        }
-
-        // Ajout spécial pour les primes CEE
-        function addPrimeCEE(tableType) {
-            if (tableType === 'existing') return; // Pas de prime pour l'existant
-
-            // Incrémenter le compteur et déterminer le numéro de la prime
-            equipmentCounters[tableType].prime++;
-            const primeNum = equipmentCounters[tableType].prime;
-
-            const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow(`Prime CEE ${primeNum}`, 'prime', primeNum, tableType, 'prime');
-            
-            // Modifier les inputs pour la prime (négative et seulement année 1)
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach((input, index) => {
-                if (index === 0) {
-                    input.value = '-3000'; // Valeur par défaut négative
-                } else {
-                    const cell = input.parentElement;
-                    cell.className = 'readonly-cell';
-                    cell.textContent = '-';
-                    cell.removeChild(input);
-                }
-            });
-
-            tbody.appendChild(row);
-            calculateStep(currentStep);
-            showSuccessMessage('Prime CEE ajoutée !');
-        }
-
-        function addReprise(tableType) {
-            if (tableType === 'existing') return; // Pas de reprise pour l'existant
-
-            // Incrémenter le compteur et déterminer le numéro de la reprise
-            equipmentCounters[tableType].reprise++;
-            const repriseNum = equipmentCounters[tableType].reprise;
-
-            const tbody = document.getElementById(`${tableType}-tbody`);
-            const row = createEquipmentRow(`Reprise équipement ${repriseNum}`, 'reprise', repriseNum, tableType, 'reprise');
-            
-            // Modifier les inputs pour la reprise (négative et seulement année 1)
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach((input, index) => {
-                if (index === 0) {
-                    input.value = '-5000'; // Valeur par défaut négative
-                } else {
-                    const cell = input.parentElement;
-                    cell.className = 'readonly-cell';
-                    cell.textContent = '-';
-                    cell.removeChild(input);
-                }
-            });
-
-            tbody.appendChild(row);
-            calculateStep(currentStep);
-            showSuccessMessage('Reprise ajoutée !');
         }
 
         // Calculs pour chaque étape
@@ -1546,11 +1647,11 @@
             
             if (detailsElement && summaryElement) {
                 if (savings > 0) {
-                    detailsElement.textContent = '✅ Solution rentable sur 5 ans';
+                    detailsElement.textContent = '✅ Solution Worthington Creyssensac rentable sur 5 ans';
                     summaryElement.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
                 } else {
                     detailsElement.textContent = '⚠️ Solution non rentable sur 5 ans';
-                    summaryElement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+                    summaryElement.style.background = 'linear-gradient(135deg, #D12C47 0%, #E74C3C 100%)';
                 }
             }
         }
@@ -1580,36 +1681,37 @@
                     summaryElement.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
                 } else {
                     detailsElement.textContent = '⚠️ Solution non rentable sur 5 ans';
-                    summaryElement.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+                    summaryElement.style.background = 'linear-gradient(135deg, #D12C47 0%, #E74C3C 100%)';
                 }
             }
         }
 
         function updateFinalDisplay() {
             const savings1 = calculations.solution1.savings ? (calculations.solution1.savings[4] || 0) : 0;
-            const savings2 = hasSolution2Data() && calculations.solution2.savings ? (calculations.solution2.savings[4] || 0) : 0;
+            const savings2 = calculations.solution2.savings ? (calculations.solution2.savings[4] || 0) : 0;
+            const hasRealSolution2Data = hasSolution2Data();
             
             // Masquer/Afficher les éléments Solution 2 dans les résultats finaux
             const solution2Cards = document.querySelectorAll('.comparison-card.solution2');
             const solution2Results = document.querySelectorAll('#final-roi-2, #final-payback-2, #final-savings-2');
             
             solution2Cards.forEach(el => {
-                el.style.display = hasSolution2Data() ? '' : 'none';
+                el.style.display = hasRealSolution2Data ? '' : 'none';
             });
             
             solution2Results.forEach(el => {
                 if (el) {
-                    el.parentElement.style.display = hasSolution2Data() ? '' : 'none';
+                    el.parentElement.style.display = hasRealSolution2Data ? '' : 'none';
                 }
             });
             
-            // Masquer la colonne Solution 2 dans le tableau final
+            // Gérer l'affichage des colonnes dans le tableau final
             const finalTable = document.getElementById('final-table');
             if (finalTable) {
                 const headers = finalTable.querySelectorAll('th');
                 const rows = finalTable.querySelectorAll('tbody tr');
                 
-                if (hasSolution2Data()) {
+                if (hasRealSolution2Data) {
                     // Afficher toutes les colonnes
                     headers.forEach(h => h.style.display = '');
                     rows.forEach(row => {
@@ -1618,12 +1720,12 @@
                     });
                 } else {
                     // Masquer les colonnes Solution 2
-                    if (headers[2]) headers[2].style.display = 'none'; // Solution 2
+                    if (headers[3]) headers[3].style.display = 'none'; // Solution 2
                     if (headers[5]) headers[5].style.display = 'none'; // Économies Sol. 2
                     
                     rows.forEach(row => {
                         const cells = row.querySelectorAll('td');
-                        if (cells[2]) cells[2].style.display = 'none'; // Solution 2
+                        if (cells[3]) cells[3].style.display = 'none'; // Solution 2
                         if (cells[5]) cells[5].style.display = 'none'; // Économies Sol. 2
                     });
                 }
@@ -1631,7 +1733,7 @@
             
             // Déterminer la meilleure solution
             let bestSolution, bestSavings;
-            if (hasSolution2Data()) {
+            if (hasRealSolution2Data) {
                 bestSolution = savings2 > savings1 ? 2 : 1;
                 bestSavings = Math.max(savings1, savings2);
             } else {
@@ -1642,13 +1744,13 @@
             const recommendationEl = document.getElementById('final-recommendation');
             if (recommendationEl) {
                 if (bestSavings > 0) {
-                    if (hasSolution2Data()) {
-                        recommendationEl.textContent = `🎯 RECOMMANDATION: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !`;
+                    if (hasRealSolution2Data) {
+                        recommendationEl.textContent = `🎯 RECOMMANDATION Worthington Creyssensac: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !`;
                     } else {
-                        recommendationEl.textContent = `🎯 RECOMMANDATION: La Solution 1 génère ${formatEuro(bestSavings)} d'économies sur 5 ans !`;
+                        recommendationEl.textContent = `🎯 RECOMMANDATION Worthington Creyssensac: La Solution Premium génère ${formatEuro(bestSavings)} d'économies sur 5 ans !`;
                     }
                 } else {
-                    recommendationEl.textContent = '🎯 Les solutions ne semblent pas rentables sur 5 ans. Vérifiez vos données.';
+                    recommendationEl.textContent = '🎯 Les solutions Worthington Creyssensac nécessitent un ajustement. Contactez nos experts pour optimiser votre configuration.';
                 }
             }
 
@@ -1660,14 +1762,16 @@
                 finalSavings1El.textContent = formatEuro(savings1);
                 finalSavings1El.className = savings1 > 0 ? 'result-value positive' : 'result-value negative';
             }
-            if (finalSavings2El && hasSolution2Data()) {
-                finalSavings2El.textContent = formatEuro(savings2);
-                finalSavings2El.className = savings2 > 0 ? 'result-value positive' : 'result-value negative';
+            if (finalSavings2El) {
+                if (hasRealSolution2Data) {
+                    finalSavings2El.textContent = formatEuro(savings2);
+                    finalSavings2El.className = savings2 > 0 ? 'result-value positive' : 'result-value negative';
+                }
             }
 
             // Calcul des ROI et payback
             const investment1 = getInvestment('solution1');
-            const investment2 = hasSolution2Data() ? getInvestment('solution2') : 0;
+            const investment2 = hasRealSolution2Data ? getInvestment('solution2') : 0;
             
             const roi1 = investment1 > 0 ? ((savings1 / investment1) * 100) : 0;
             const roi2 = investment2 > 0 ? ((savings2 / investment2) * 100) : 0;
@@ -1679,20 +1783,22 @@
                 roi1El.textContent = roi1.toFixed(1) + '%';
                 roi1El.className = roi1 > 0 ? 'result-value positive' : 'result-value negative';
             }
-            if (roi2El && hasSolution2Data()) {
-                roi2El.textContent = roi2.toFixed(1) + '%';
-                roi2El.className = roi2 > 0 ? 'result-value positive' : 'result-value negative';
+            if (roi2El) {
+                if (hasRealSolution2Data) {
+                    roi2El.textContent = roi2.toFixed(1) + '%';
+                    roi2El.className = roi2 > 0 ? 'result-value positive' : 'result-value negative';
+                }
             }
 
             // Calcul du payback
             const payback1 = calculatePayback('solution1');
-            const payback2 = hasSolution2Data() ? calculatePayback('solution2') : '';
+            const payback2 = hasRealSolution2Data ? calculatePayback('solution2') : '';
             
             const payback1El = document.getElementById('final-payback-1');
             const payback2El = document.getElementById('final-payback-2');
             
             if (payback1El) payback1El.textContent = payback1;
-            if (payback2El && hasSolution2Data()) payback2El.textContent = payback2;
+            if (payback2El && hasRealSolution2Data) payback2El.textContent = payback2;
         }
 
         function getInvestment(solutionType) {
@@ -1737,8 +1843,8 @@
                     datasets: [{
                         label: '🔧 Coûts Cumulés Équipement Existant',
                         data: calculations.existing.cumulative || [0, 0, 0, 0, 0],
-                        backgroundColor: 'rgba(231, 76, 60, 0.8)',
-                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(209, 44, 71, 0.8)',
+                        borderColor: '#D12C47',
                         borderWidth: 2,
                         borderRadius: 8
                     }]
@@ -1750,7 +1856,8 @@
                         title: {
                             display: true,
                             text: '📊 Évolution des coûts - Équipement Existant',
-                            font: { size: 16, weight: 'bold' }
+                            font: { size: 16, weight: 'bold' },
+                            color: '#1B365D'
                         },
                         legend: { position: 'bottom' }
                     },
@@ -1782,16 +1889,16 @@
                     datasets: [{
                         label: '🔧 Équipement Existant',
                         data: calculations.existing.cumulative || [0, 0, 0, 0, 0],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderColor: '#D12C47',
+                        backgroundColor: 'rgba(209, 44, 71, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
                         pointRadius: 6
                     }, {
-                        label: '🚀 Solution 1',
+                        label: '🚀 Solution Worthington Creyssensac',
                         data: calculations.solution1.cumulative || [0, 0, 0, 0, 0],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: '#1B365D',
+                        backgroundColor: 'rgba(27, 54, 93, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
                         pointRadius: 6
@@ -1803,8 +1910,9 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: '📈 Comparaison: Existant vs Solution 1',
-                            font: { size: 16, weight: 'bold' }
+                            text: '📈 Comparaison: Existant vs Solution Worthington Creyssensac',
+                            font: { size: 16, weight: 'bold' },
+                            color: '#1B365D'
                         },
                         legend: { position: 'bottom' }
                     },
@@ -1833,16 +1941,16 @@
                     datasets: [{
                         label: '🔧 Équipement Existant',
                         data: calculations.existing.cumulative,
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderColor: '#D12C47',
+                        backgroundColor: 'rgba(209, 44, 71, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
                         pointRadius: 6
                     }, {
-                        label: '🚀 Solution 1',
+                        label: '🚀 Solution 1 Worthington Creyssensac',
                         data: calculations.solution1.cumulative,
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: '#1B365D',
+                        backgroundColor: 'rgba(27, 54, 93, 0.1)',
                         tension: 0.4,
                         borderWidth: 3,
                         pointRadius: 6
@@ -1863,7 +1971,8 @@
                         title: {
                             display: true,
                             text: '📈 Comparaison Complète des 3 Options',
-                            font: { size: 16, weight: 'bold' }
+                            font: { size: 16, weight: 'bold' },
+                            color: '#1B365D'
                         },
                         legend: { position: 'bottom' }
                     },
@@ -1892,16 +2001,16 @@
                     datasets: [{
                         label: '🔧 Équipement Existant',
                         data: calculations.existing.cumulative,
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderColor: '#D12C47',
+                        backgroundColor: 'rgba(209, 44, 71, 0.1)',
                         tension: 0.4,
                         borderWidth: 4,
                         pointRadius: 8
                     }, {
-                        label: '🚀 Solution 1 Premium',
+                        label: '🚀 Solution Worthington Creyssensac Premium',
                         data: calculations.solution1.cumulative,
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: '#1B365D',
+                        backgroundColor: 'rgba(27, 54, 93, 0.1)',
                         tension: 0.4,
                         borderWidth: 4,
                         pointRadius: 8
@@ -1921,8 +2030,9 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: '🎯 Analyse Comparative Finale - Évolution sur 5 ans',
-                            font: { size: 18, weight: 'bold' }
+                            text: '🎯 Analyse Comparative Finale Worthington Creyssensac - Évolution sur 5 ans',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1B365D'
                         },
                         legend: {
                             position: 'bottom',
@@ -1945,17 +2055,18 @@
             const tableBody = document.getElementById('final-table-body');
             if (!tableBody) return;
 
+            const hasRealSolution2Data = hasSolution2Data();
             let tableHTML = '';
+            
             for (let i = 0; i < 5; i++) {
                 const year = i + 1;
                 const existingCumul = calculations.existing.cumulative ? (calculations.existing.cumulative[i] || 0) : 0;
                 const solution1Cumul = calculations.solution1.cumulative ? (calculations.solution1.cumulative[i] || 0) : 0;
                 const savings1 = calculations.solution1.savings ? (calculations.solution1.savings[i] || 0) : 0;
-
                 const savings1Class = savings1 > 0 ? 'profit' : 'loss';
 
-                if (hasSolution2Data()) {
-                    // Tableau complet avec Solution 2
+                if (hasRealSolution2Data) {
+                    // Tableau complet avec Solution 2 - données réelles
                     const solution2Cumul = calculations.solution2.cumulative ? (calculations.solution2.cumulative[i] || 0) : 0;
                     const savings2 = calculations.solution2.savings ? (calculations.solution2.savings[i] || 0) : 0;
                     const savings2Class = savings2 > 0 ? 'profit' : 'loss';
@@ -1977,14 +2088,45 @@
                             <td><strong>Année ${year}</strong></td>
                             <td>${formatEuro(existingCumul)}</td>
                             <td>${formatEuro(solution1Cumul)}</td>
-                            <td style="display: none;"></td>
+                            <td style="display: none;">0 €</td>
                             <td class="${savings1Class}">${formatEuro(savings1)}</td>
-                            <td style="display: none;"></td>
+                            <td style="display: none;">0 €</td>
                         </tr>
                     `;
                 }
             }
             tableBody.innerHTML = tableHTML;
+            
+            // Forcer la mise à jour de l'affichage des colonnes après génération du HTML
+            setTimeout(() => {
+                const finalTable = document.getElementById('final-table');
+                if (finalTable) {
+                    const headers = finalTable.querySelectorAll('th');
+                    const rows = finalTable.querySelectorAll('tbody tr');
+                    
+                    if (hasRealSolution2Data) {
+                        // Afficher toutes les colonnes explicitement
+                        if (headers[3]) headers[3].style.display = 'table-cell'; // Solution 2
+                        if (headers[5]) headers[5].style.display = 'table-cell'; // Économies Sol. 2
+                        
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            if (cells[3]) cells[3].style.display = 'table-cell'; // Solution 2
+                            if (cells[5]) cells[5].style.display = 'table-cell'; // Économies Sol. 2
+                        });
+                    } else {
+                        // Masquer les colonnes Solution 2
+                        if (headers[3]) headers[3].style.display = 'none'; // Solution 2
+                        if (headers[5]) headers[5].style.display = 'none'; // Économies Sol. 2
+                        
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            if (cells[3]) cells[3].style.display = 'none'; // Solution 2
+                            if (cells[5]) cells[5].style.display = 'none'; // Économies Sol. 2
+                        });
+                    }
+                }
+            }, 10);
         }
 
         // Fonctions utilitaires
@@ -2025,64 +2167,269 @@
             updateUI();
             calculateStep(1);
             
-            showSuccessMessage('Calculateur réinitialisé avec succès !');
+            showSuccessMessage('Calculateur Worthington Creyssensac réinitialisé avec succès !');
         }
 
-        function exportText() {
-            const savings1 = calculations.solution1.savings[4];
-            const savings2 = hasSolution2Data() ? calculations.solution2.savings[4] : 0;
-            const bestSolution = hasSolution2Data() && savings2 > savings1 ? 2 : 1;
-            const bestSavings = hasSolution2Data() ? Math.max(savings1, savings2) : savings1;
+        // Fonction d'export d'image améliorée et plus robuste
+        function exportImage() {
+            // Créer un overlay de chargement
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div>Génération du rapport en cours...</div>
+                <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">Veuillez patienter quelques secondes</div>
+            `;
+            document.body.appendChild(loadingOverlay);
+
+            // Attendre un petit délai pour que l'overlay s'affiche
+            setTimeout(() => {
+                try {
+                    generateReportImage();
+                } catch (error) {
+                    console.error('Erreur lors de la génération:', error);
+                    handleExportError();
+                }
+            }, 100);
+        }
+
+        function generateReportImage() {
+            // Créer un conteneur temporaire pour le rapport complet
+            const reportContainer = document.createElement('div');
+            reportContainer.className = 'export-container';
+            reportContainer.style.position = 'absolute';
+            reportContainer.style.top = '-10000px';
+            reportContainer.style.left = '0';
+            reportContainer.style.width = '1200px';
+            reportContainer.style.zIndex = '-1';
+            reportContainer.style.backgroundColor = '#ffffff';
             
-            let text = "🎯 ANALYSE ROI - ÉQUIPEMENT INDUSTRIEL\n";
-            text += "=====================================\n\n";
-            
-            text += "📊 INDICATEURS CLÉS:\n";
-            text += `-----------------\n`;
-            text += `💵 Économies Solution 1: ${formatEuro(savings1)}\n`;
-            if (hasSolution2Data()) {
-                text += `💵 Économies Solution 2: ${formatEuro(savings2)}\n\n`;
-            } else {
-                text += '\n';
+            // En-tête du rapport
+            const reportHeader = document.createElement('div');
+            reportHeader.className = 'report-header-export';
+            reportHeader.innerHTML = `
+                <h1>🎯 Rapport ROI Worthington Creyssensac</h1>
+                <p>Analyse comparative des solutions d'air comprimé industriel</p>
+                <p style="font-size: 1rem; margin-top: 15px;">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
+            `;
+            reportContainer.appendChild(reportHeader);
+
+            // Bannière de recommandation
+            const recommendation = document.getElementById('final-recommendation');
+            if (recommendation) {
+                const recClone = recommendation.cloneNode(true);
+                recClone.style.marginBottom = '30px';
+                reportContainer.appendChild(recClone);
             }
-            
-            if (bestSavings > 0) {
-                text += `🎯 RECOMMANDATION: La Solution ${bestSolution} est optimale avec ${formatEuro(bestSavings)} d'économies sur 5 ans !\n\n`;
-            } else {
-                text += `🎯 ATTENTION: Les solutions ne semblent pas rentables sur 5 ans.\n\n`;
+
+            // Grille des résultats
+            const resultsGrid = document.querySelector('.results-grid');
+            if (resultsGrid) {
+                const resultsClone = resultsGrid.cloneNode(true);
+                resultsClone.style.marginBottom = '30px';
+                reportContainer.appendChild(resultsClone);
             }
-            
-            text += "📈 DÉTAIL PAR ANNÉE:\n";
-            text += "-----------------\n";
-            if (hasSolution2Data()) {
-                text += "Année\t🔧 Existant\t🚀 Solution 1\t💡 Solution 2\t💰 Éco. Sol.1\t💰 Éco. Sol.2\n";
-            } else {
-                text += "Année\t🔧 Existant\t🚀 Solution 1\t💰 Éco. Sol.1\n";
+
+            // Créer une représentation statique du graphique au lieu d'un canvas
+            createStaticChart(reportContainer);
+
+            // Tableau détaillé
+            const tableSection = document.querySelector('#step-4 .equipment-section');
+            if (tableSection) {
+                const tableClone = tableSection.cloneNode(true);
+                tableClone.style.marginBottom = '30px';
+                
+                // Nettoyer les éléments interactifs du tableau cloné
+                const buttons = tableClone.querySelectorAll('button');
+                buttons.forEach(btn => btn.remove());
+                
+                reportContainer.appendChild(tableClone);
             }
-            
+
+            // Pied de page
+            const footer = document.createElement('div');
+            footer.style.textAlign = 'center';
+            footer.style.padding = '30px';
+            footer.style.background = 'linear-gradient(135deg, #1B365D 0%, #2C4F7C 100%)';
+            footer.style.color = 'white';
+            footer.style.borderRadius = '15px';
+            footer.style.marginTop = '30px';
+            footer.innerHTML = `
+                <h3 style="margin-bottom: 15px;">📞 Worthington Creyssensac Creyssensac</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 10px;">Expert en solutions d'air comprimé industriel</p>
+                <p style="font-size: 1rem; opacity: 0.9;">🌐 www.Worthington Creyssensac-creyssensac.com</p>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">Contactez nos experts pour une étude personnalisée</p>
+            `;
+            reportContainer.appendChild(footer);
+
+            // Ajouter le conteneur au document
+            document.body.appendChild(reportContainer);
+
+            // Attendre un peu que le contenu soit rendu puis capturer
+            setTimeout(() => {
+                captureReportImage(reportContainer);
+            }, 300);
+        }
+
+        function createStaticChart(container) {
+            // Créer une représentation visuelle simple du graphique sans Canvas
+            const chartSection = document.createElement('div');
+            chartSection.style.background = 'white';
+            chartSection.style.borderRadius = '20px';
+            chartSection.style.padding = '25px';
+            chartSection.style.margin = '30px 0';
+            chartSection.style.boxShadow = '0 20px 40px rgba(27, 54, 93, 0.08)';
+            chartSection.style.minHeight = '400px';
+
+            const chartTitle = document.createElement('h3');
+            chartTitle.textContent = '📈 Évolution Comparative des Coûts sur 5 ans';
+            chartTitle.style.textAlign = 'center';
+            chartTitle.style.color = '#1B365D';
+            chartTitle.style.marginBottom = '30px';
+            chartTitle.style.fontSize = '1.5rem';
+            chartTitle.style.fontWeight = 'bold';
+            chartSection.appendChild(chartTitle);
+
+            // Créer un tableau de données visuelles
+            const dataTable = document.createElement('table');
+            dataTable.style.width = '100%';
+            dataTable.style.borderCollapse = 'collapse';
+            dataTable.style.fontSize = '14px';
+
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th style="padding: 15px; background: #1B365D; color: white; text-align: center;">Année</th>
+                <th style="padding: 15px; background: #D12C47; color: white; text-align: center;">🔧 Équipement Existant</th>
+                <th style="padding: 15px; background: #1B365D; color: white; text-align: center;">🚀 Solution Worthington Creyssensac</th>
+                <th style="padding: 15px; background: #27ae60; color: white; text-align: center;">💰 Économies</th>
+            `;
+            dataTable.appendChild(headerRow);
+
+            // Ajouter les données
             for (let i = 0; i < 5; i++) {
                 const year = i + 1;
-                const existingCumul = calculations.existing.cumulative[i];
-                const solution1Cumul = calculations.solution1.cumulative[i];
-                const solution2Cumul = hasSolution2Data() ? calculations.solution2.cumulative[i] : 0;
-                const savings1Year = calculations.solution1.savings[i];
-                const savings2Year = hasSolution2Data() ? calculations.solution2.savings[i] : 0;
+                const existingCumul = calculations.existing.cumulative ? (calculations.existing.cumulative[i] || 0) : 0;
+                const solution1Cumul = calculations.solution1.cumulative ? (calculations.solution1.cumulative[i] || 0) : 0;
+                const savings = calculations.solution1.savings ? (calculations.solution1.savings[i] || 0) : 0;
+                
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid #e9ecef';
+                row.innerHTML = `
+                    <td style="padding: 12px; text-align: center; font-weight: bold;">Année ${year}</td>
+                    <td style="padding: 12px; text-align: center; color: #D12C47; font-weight: 600;">${formatEuro(existingCumul)}</td>
+                    <td style="padding: 12px; text-align: center; color: #1B365D; font-weight: 600;">${formatEuro(solution1Cumul)}</td>
+                    <td style="padding: 12px; text-align: center; color: ${savings > 0 ? '#27ae60' : '#D12C47'}; font-weight: 600;">${formatEuro(savings)}</td>
+                `;
+                dataTable.appendChild(row);
+            }
 
-                if (hasSolution2Data()) {
-                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(solution2Cumul)}\t${formatEuro(savings1Year)}\t${formatEuro(savings2Year)}\n`;
-                } else {
-                    text += `${year}\t${formatEuro(existingCumul)}\t${formatEuro(solution1Cumul)}\t${formatEuro(savings1Year)}\n`;
+            chartSection.appendChild(dataTable);
+            container.appendChild(chartSection);
+        }
+
+        function captureReportImage(container) {
+            const options = {
+                backgroundColor: '#ffffff',
+                width: 1200,
+                height: container.scrollHeight,
+                scale: 1.5,
+                useCORS: true,
+                allowTaint: false,
+                foreignObjectRendering: false,
+                logging: false,
+                removeContainer: false,
+                onclone: (clonedDoc) => {
+                    // Assurer que tous les styles sont appliqués dans le clone
+                    const clonedContainer = clonedDoc.querySelector('.export-container');
+                    if (clonedContainer) {
+                        clonedContainer.style.position = 'static';
+                        clonedContainer.style.top = 'auto';
+                        clonedContainer.style.left = 'auto';
+                        clonedContainer.style.zIndex = 'auto';
+                        clonedContainer.style.transform = 'none';
+                    }
+                    
+                    // Enlever tous les canvas qui pourraient causer des problèmes
+                    const canvases = clonedDoc.querySelectorAll('canvas');
+                    canvases.forEach(canvas => {
+                        if (canvas.parentNode) {
+                            canvas.parentNode.removeChild(canvas);
+                        }
+                    });
                 }
+            };
+
+            html2canvas(container, options).then(canvas => {
+                handleSuccessfulCapture(canvas, container);
+            }).catch(error => {
+                console.error('Erreur html2canvas:', error);
+                handleExportError(container);
+            });
+        }
+
+        function handleSuccessfulCapture(canvas, container) {
+            // Nettoyer le conteneur temporaire
+            if (document.body.contains(container)) {
+                document.body.removeChild(container);
             }
             
-            text += "\n📅 Rapport généré le " + new Date().toLocaleDateString('fr-FR') + "\n";
-            text += "🏢 Calculateur ROI Pro - Analyse comparative d'équipements industriels\n";
+            // Supprimer l'overlay de chargement
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay && document.body.contains(loadingOverlay)) {
+                document.body.removeChild(loadingOverlay);
+            }
+
+            // Copier l'image dans le presse-papier ou télécharger
+            canvas.toBlob(blob => {
+                if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        navigator.clipboard.write([item]).then(() => {
+                            showSuccessMessage('📸 Rapport image copié dans le presse-papier ! Prêt à coller dans vos documents.');
+                        }).catch(() => {
+                            downloadImage(canvas);
+                        });
+                    } catch (e) {
+                        downloadImage(canvas);
+                    }
+                } else {
+                    downloadImage(canvas);
+                }
+            }, 'image/png', 0.95);
+        }
+
+        function handleExportError(container = null) {
+            // Nettoyer si nécessaire
+            if (container && document.body.contains(container)) {
+                document.body.removeChild(container);
+            }
             
-            navigator.clipboard.writeText(text).then(() => {
-                showSuccessMessage('Rapport complet copié dans le presse-papier !');
-            }).catch(() => {
-                alert('Erreur lors de la copie. Voici le contenu :\n\n' + text);
-            });
+            // Supprimer l'overlay de chargement
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay && document.body.contains(loadingOverlay)) {
+                document.body.removeChild(loadingOverlay);
+            }
+            
+            showSuccessMessage('⚠️ Génération d\'image non disponible sur ce navigateur. Veuillez réessayer ou contacter le support.');
+        }
+
+        function downloadImage(canvas) {
+            try {
+                // Créer un lien de téléchargement
+                const link = document.createElement('a');
+                link.download = `rapport-roi-Worthington Creyssensac-${new Date().toISOString().split('T')[0]}.png`;
+                link.href = canvas.toDataURL('image/png', 0.95);
+                
+                // Déclencher le téléchargement
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showSuccessMessage('📁 Rapport image téléchargé ! Fichier sauvegardé dans vos téléchargements.');
+            } catch (error) {
+                console.error('Erreur téléchargement:', error);
+                showSuccessMessage('⚠️ Impossible de télécharger l\'image. Veuillez réessayer ou contacter le support.');
+            }
         }
 
         function showSuccessMessage(message) {
@@ -2097,30 +2444,6 @@
                     document.body.removeChild(successDiv);
                 }
             }, 3000);
-        }
-
-        // Boutons d'actions spéciales pour les solutions
-        function addSpecialButtons(tableType) {
-            if (tableType === 'existing') return;
-            
-            const section = document.querySelector(`#step-${currentStep} .add-equipment-section .add-equipment-controls`);
-            if (!section) return;
-            
-            // Vérifier si les boutons existent déjà
-            if (section.querySelector('.prime-btn')) return;
-            
-            const primeBtn = document.createElement('button');
-            primeBtn.className = 'add-btn prime-btn';
-            primeBtn.innerHTML = '💰 Ajouter Prime CEE';
-            primeBtn.onclick = () => addPrimeCEE(tableType);
-            
-            const repriseBtn = document.createElement('button');
-            repriseBtn.className = 'add-btn reprise-btn';
-            repriseBtn.innerHTML = '♻️ Ajouter Reprise';
-            repriseBtn.onclick = () => addReprise(tableType);
-            
-            section.appendChild(primeBtn);
-            section.appendChild(repriseBtn);
         }
 
         // Gestion des événements
@@ -2142,7 +2465,7 @@
                 addCompressor('existing');
             }, 500);
             
-            showSuccessMessage('Calculateur ROI chargé avec succès ! 🎯');
+            showSuccessMessage('Calculateur ROI Worthington Creyssensac chargé avec succès ! 🎯');
 
             const toggleBtn = document.getElementById('themeToggle');
             if (toggleBtn) {
@@ -2151,28 +2474,6 @@
                 });
             }
         });
-
-        // Mettre à jour les boutons spéciaux quand on change d'étape
-        function updateSpecialButtons() {
-            if (currentStep === 2) {
-                addSpecialButtons('solution1');
-            } else if (currentStep === 3) {
-                addSpecialButtons('solution2');
-            }
-        }
-
-        // Modifier nextStep pour inclure les boutons spéciaux
-        const originalNextStep = nextStep;
-        nextStep = function() {
-            originalNextStep();
-            updateSpecialButtons();
-        };
-
-        const originalGoToStep = goToStep;
-        goToStep = function(step) {
-            originalGoToStep(step);
-            updateSpecialButtons();
-        };
     </script>
 </body>
 </html>
