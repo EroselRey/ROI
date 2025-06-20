@@ -2198,6 +2198,13 @@
         }
 
         function generateReportImage(orientation = 'vertical') {
+            // S'assurer que le tableau final contient les dernières données
+            try {
+                calculateFinalResults();
+            } catch (e) {
+                console.error('Recalcul des données impossible:', e);
+            }
+
             // Créer un conteneur temporaire pour le rapport complet
             const reportContainer = document.createElement('div');
             reportContainer.className = 'export-container';
